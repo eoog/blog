@@ -1,0 +1,18 @@
+2024-08-26 11:47:18,797 INFO o.s.b.StartupInfoLogger [main] Starting SpringLog4j2Application using Java 17.0.10 with PID 3488 (D:\blog\spring-Log4j2\build\classes\java\main started by user in D:\blog\spring-Log4j2)
+2024-08-26 11:47:18,800 DEBUG o.s.b.StartupInfoLogger [main] Running with Spring Boot v3.3.3, Spring v6.1.12
+2024-08-26 11:47:18,800 INFO o.s.b.SpringApplication [main] No active profile set, falling back to 1 default profile: "default"
+2024-08-26 11:47:19,155 INFO o.s.b.w.e.t.TomcatWebServer [main] Tomcat initialized with port 8080 (http)
+2024-08-26 11:47:19,187 INFO o.s.b.w.s.c.ServletWebServerApplicationContext [main] Root WebApplicationContext: initialization completed in 366 ms
+2024-08-26 11:47:19,331 INFO o.s.b.w.e.t.TomcatWebServer [main] Tomcat started on port 8080 (http) with context path '/'
+2024-08-26 11:47:19,335 INFO o.s.b.StartupInfoLogger [main] Started SpringLog4j2Application in 0.749 seconds (process running for 1.106)
+2024-08-26 11:47:47,903 INFO o.s.w.s.FrameworkServlet [http-nio-8080-exec-1] Initializing Servlet 'dispatcherServlet'
+2024-08-26 11:47:47,903 INFO o.s.w.s.FrameworkServlet [http-nio-8080-exec-1] Completed initialization in 0 ms
+2024-08-26 11:48:36,286 INFO o.s.b.StartupInfoLogger [main] Starting SpringLog4j2Application using Java 17.0.10 with PID 22612 (D:\blog\spring-Log4j2\build\classes\java\main started by user in D:\blog\spring-Log4j2)
+2024-08-26 11:48:36,286 DEBUG o.s.b.StartupInfoLogger [main] Running with Spring Boot v3.3.3, Spring v6.1.12
+2024-08-26 11:48:36,286 INFO o.s.b.SpringApplication [main] No active profile set, falling back to 1 default profile: "default"
+2024-08-26 11:48:36,633 INFO o.s.b.w.e.t.TomcatWebServer [main] Tomcat initialized with port 8080 (http)
+2024-08-26 11:48:36,665 INFO o.s.b.w.s.c.ServletWebServerApplicationContext [main] Root WebApplicationContext: initialization completed in 354 ms
+2024-08-26 11:48:36,811 INFO o.s.b.w.e.t.TomcatWebServer [main] Tomcat started on port 8080 (http) with context path '/'
+2024-08-26 11:48:36,814 INFO o.s.b.StartupInfoLogger [main] Started SpringLog4j2Application in 0.696 seconds (process running for 1.077)
+2024-08-26 11:48:38,813 INFO o.s.w.s.FrameworkServlet [http-nio-8080-exec-1] Initializing Servlet 'dispatcherServlet'
+2024-08-26 11:48:38,813 INFO o.s.w.s.FrameworkServlet [http-nio-8080-exec-1] Completed initialization in 0 ms
