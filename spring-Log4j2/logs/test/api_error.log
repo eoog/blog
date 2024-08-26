@@ -1,4 +1,0 @@
-2024-08-26 11:47:47,927 INFO c.w.s.c.TestController [http-nio-8080-exec-1] 코드의 INFO
-2024-08-26 11:48:08,132 INFO c.w.s.c.TestController [http-nio-8080-exec-3] 코드의 INFO
-2024-08-26 11:48:38,827 DEBUG c.w.s.c.TestController [http-nio-8080-exec-1] 코드의 DEBUG
-2024-08-26 11:48:38,827 INFO c.w.s.c.TestController [http-nio-8080-exec-1] 코드의 INFO

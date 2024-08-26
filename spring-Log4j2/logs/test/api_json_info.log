@@ -1,8 +1,0 @@
-2024-08-26 11:47:18,797 INFO o.s.b.StartupInfoLogger [main] Starting SpringLog4j2Application using Java 17.0.10 with PID 3488 (D:\blog\spring-Log4j2\build\classes\java\main started by user in D:\blog\spring-Log4j2)
-2024-08-26 11:47:18,800 DEBUG o.s.b.StartupInfoLogger [main] Running with Spring Boot v3.3.3, Spring v6.1.12
-2024-08-26 11:47:18,800 INFO o.s.b.SpringApplication [main] No active profile set, falling back to 1 default profile: "default"
-2024-08-26 11:47:19,335 INFO o.s.b.StartupInfoLogger [main] Started SpringLog4j2Application in 0.749 seconds (process running for 1.106)
-2024-08-26 11:48:36,286 INFO o.s.b.StartupInfoLogger [main] Starting SpringLog4j2Application using Java 17.0.10 with PID 22612 (D:\blog\spring-Log4j2\build\classes\java\main started by user in D:\blog\spring-Log4j2)
-2024-08-26 11:48:36,286 DEBUG o.s.b.StartupInfoLogger [main] Running with Spring Boot v3.3.3, Spring v6.1.12
-2024-08-26 11:48:36,286 INFO o.s.b.SpringApplication [main] No active profile set, falling back to 1 default profile: "default"
-2024-08-26 11:48:36,814 INFO o.s.b.StartupInfoLogger [main] Started SpringLog4j2Application in 0.696 seconds (process running for 1.077)

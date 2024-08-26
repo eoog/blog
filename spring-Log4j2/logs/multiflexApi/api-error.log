@@ -1,0 +1,80 @@
+2024-08-26 13:02:38,471 INFO o.s.b.StartupInfoLogger [main] Starting SpringLog4j2Application using Java 17.0.10 with PID 16340 (D:\blog\spring-Log4j2\build\classes\java\main started by user in D:\blog\spring-Log4j2)
+2024-08-26 13:02:38,471 DEBUG o.s.b.StartupInfoLogger [main] Running with Spring Boot v3.3.3, Spring v6.1.12
+2024-08-26 13:02:38,474 INFO o.s.b.SpringApplication [main] No active profile set, falling back to 1 default profile: "default"
+2024-08-26 13:02:38,805 INFO o.s.b.w.e.t.TomcatWebServer [main] Tomcat initialized with port 8080 (http)
+2024-08-26 13:02:38,836 INFO o.s.b.w.s.c.ServletWebServerApplicationContext [main] Root WebApplicationContext: initialization completed in 350 ms
+2024-08-26 13:02:38,978 INFO o.s.b.w.e.t.TomcatWebServer [main] Tomcat started on port 8080 (http) with context path '/'
+2024-08-26 13:02:38,982 INFO o.s.b.StartupInfoLogger [main] Started SpringLog4j2Application in 0.726 seconds (process running for 1.077)
+2024-08-26 13:02:41,320 INFO o.s.w.s.FrameworkServlet [http-nio-8080-exec-1] Initializing Servlet 'dispatcherServlet'
+2024-08-26 13:02:41,321 INFO o.s.w.s.FrameworkServlet [http-nio-8080-exec-1] Completed initialization in 1 ms
+2024-08-26 13:02:41,334 DEBUG c.w.s.c.TestController [http-nio-8080-exec-1] [+] 도중에 동기 로깅을 수행합니다.
+2024-08-26 13:02:55,101 INFO o.s.b.StartupInfoLogger [main] Starting SpringLog4j2Application using Java 17.0.10 with PID 19424 (D:\blog\spring-Log4j2\build\classes\java\main started by user in D:\blog\spring-Log4j2)
+2024-08-26 13:02:55,104 DEBUG o.s.b.StartupInfoLogger [main] Running with Spring Boot v3.3.3, Spring v6.1.12
+2024-08-26 13:02:55,105 INFO o.s.b.SpringApplication [main] No active profile set, falling back to 1 default profile: "default"
+2024-08-26 13:02:55,472 INFO o.s.b.w.e.t.TomcatWebServer [main] Tomcat initialized with port 8080 (http)
+2024-08-26 13:02:55,502 INFO o.s.b.w.s.c.ServletWebServerApplicationContext [main] Root WebApplicationContext: initialization completed in 377 ms
+2024-08-26 13:02:55,644 INFO o.s.b.w.e.t.TomcatWebServer [main] Tomcat started on port 8080 (http) with context path '/'
+2024-08-26 13:02:55,648 INFO o.s.b.StartupInfoLogger [main] Started SpringLog4j2Application in 0.783 seconds (process running for 1.174)
+2024-08-26 13:02:56,685 INFO o.s.w.s.FrameworkServlet [http-nio-8080-exec-1] Initializing Servlet 'dispatcherServlet'
+2024-08-26 13:02:56,686 INFO o.s.w.s.FrameworkServlet [http-nio-8080-exec-1] Completed initialization in 0 ms
+2024-08-26 13:02:56,698 DEBUG c.w.s.c.TestController [http-nio-8080-exec-1] [+] 도중에 동기 로깅을 수행합니다.
+2024-08-26 13:03:22,681 INFO o.s.b.StartupInfoLogger [main] Starting SpringLog4j2Application using Java 17.0.10 with PID 24152 (D:\blog\spring-Log4j2\build\classes\java\main started by user in D:\blog\spring-Log4j2)
+2024-08-26 13:03:22,681 DEBUG o.s.b.StartupInfoLogger [main] Running with Spring Boot v3.3.3, Spring v6.1.12
+2024-08-26 13:03:22,681 INFO o.s.b.SpringApplication [main] No active profile set, falling back to 1 default profile: "default"
+2024-08-26 13:03:23,021 INFO o.s.b.w.e.t.TomcatWebServer [main] Tomcat initialized with port 8080 (http)
+2024-08-26 13:03:23,052 INFO o.s.b.w.s.c.ServletWebServerApplicationContext [main] Root WebApplicationContext: initialization completed in 355 ms
+2024-08-26 13:03:23,200 INFO o.s.b.w.e.t.TomcatWebServer [main] Tomcat started on port 8080 (http) with context path '/'
+2024-08-26 13:03:23,204 INFO o.s.b.StartupInfoLogger [main] Started SpringLog4j2Application in 0.75 seconds (process running for 1.1)
+2024-08-26 13:03:25,062 INFO o.s.w.s.FrameworkServlet [http-nio-8080-exec-1] Initializing Servlet 'dispatcherServlet'
+2024-08-26 13:03:25,063 INFO o.s.w.s.FrameworkServlet [http-nio-8080-exec-1] Completed initialization in 1 ms
+2024-08-26 13:03:25,075 INFO ? [http-nio-8080-exec-1] [+] 비동기 로깅이 출력이 잘 되는지 확인합니다.
+2024-08-26 13:03:25,076 INFO ? [http-nio-8080-exec-1] [+] 비동기 로깅이 출력이 잘 되는지 확인합니다.
+2024-08-26 13:03:25,076 INFO ? [http-nio-8080-exec-1] [+] 비동기 로깅이 출력이 잘 되는지 확인합니다.
+2024-08-26 13:03:25,076 INFO ? [http-nio-8080-exec-1] [+] 비동기 로깅이 출력이 잘 되는지 확인합니다.
+2024-08-26 13:03:25,076 DEBUG c.w.s.c.TestController [http-nio-8080-exec-1] [+] 도중에 동기 로깅을 수행합니다.
+2024-08-26 13:03:25,076 INFO ? [http-nio-8080-exec-1] [+] 비동기 로깅이 출력이 잘 되는지 확인합니다.
+2024-08-26 13:03:25,076 INFO ? [http-nio-8080-exec-1] [+] 비동기 로깅이 출력이 잘 되는지 확인합니다.
+2024-08-26 13:03:25,076 INFO ? [http-nio-8080-exec-1] [+] 비동기 로깅이 출력이 잘 되는지 확인합니다.
+2024-08-26 13:03:25,076 INFO ? [http-nio-8080-exec-1] [+] 비동기 로깅이 출력이 잘 되는지 확인합니다.
+2024-08-26 13:03:25,076 INFO ? [http-nio-8080-exec-1] [+] 비동기 로깅이 출력이 잘 되는지 확인합니다.
+2024-08-26 13:03:25,076 INFO ? [http-nio-8080-exec-1] [+] 비동기 로깅이 출력이 잘 되는지 확인합니다.
+2024-08-26 13:03:25,076 INFO ? [http-nio-8080-exec-1] [+] 비동기 로깅이 출력이 잘 되는지 확인합니다.
+2024-08-26 13:03:25,076 INFO ? [http-nio-8080-exec-1] [+] 비동기 로깅이 출력이 잘 되는지 확인합니다.
+2024-08-26 13:03:25,076 INFO ? [http-nio-8080-exec-1] [+] 비동기 로깅이 출력이 잘 되는지 확인합니다.
+2024-08-26 13:03:25,076 INFO ? [http-nio-8080-exec-1] [+] 비동기 로깅이 출력이 잘 되는지 확인합니다.
+2024-08-26 13:03:25,076 INFO ? [http-nio-8080-exec-1] [+] 비동기 로깅이 출력이 잘 되는지 확인합니다.
+2024-08-26 13:03:25,076 INFO ? [http-nio-8080-exec-1] [+] 비동기 로깅이 출력이 잘 되는지 확인합니다.
+2024-08-26 13:03:25,076 INFO ? [http-nio-8080-exec-1] [+] 비동기 로깅이 출력이 잘 되는지 확인합니다.
+2024-08-26 13:03:25,076 INFO ? [http-nio-8080-exec-1] [+] 비동기 로깅이 출력이 잘 되는지 확인합니다.
+2024-08-26 13:03:25,076 INFO ? [http-nio-8080-exec-1] [+] 비동기 로깅이 출력이 잘 되는지 확인합니다.
+2024-08-26 13:03:25,076 INFO ? [http-nio-8080-exec-1] [+] 비동기 로깅이 출력이 잘 되는지 확인합니다.
+2024-08-26 13:03:25,076 INFO ? [http-nio-8080-exec-1] [+] 비동기 로깅이 출력이 잘 되는지 확인합니다.
+2024-08-26 13:03:25,076 INFO ? [http-nio-8080-exec-1] [+] 비동기 로깅이 출력이 잘 되는지 확인합니다.
+2024-08-26 13:03:25,076 INFO ? [http-nio-8080-exec-1] [+] 비동기 로깅이 출력이 잘 되는지 확인합니다.
+2024-08-26 13:03:25,076 INFO ? [http-nio-8080-exec-1] [+] 비동기 로깅이 출력이 잘 되는지 확인합니다.
+2024-08-26 13:03:25,076 INFO ? [http-nio-8080-exec-1] [+] 비동기 로깅이 출력이 잘 되는지 확인합니다.
+2024-08-26 13:03:25,076 INFO ? [http-nio-8080-exec-1] [+] 비동기 로깅이 출력이 잘 되는지 확인합니다.
+2024-08-26 13:03:25,076 INFO ? [http-nio-8080-exec-1] [+] 비동기 로깅이 출력이 잘 되는지 확인합니다.
+2024-08-26 13:03:25,076 INFO ? [http-nio-8080-exec-1] [+] 비동기 로깅이 출력이 잘 되는지 확인합니다.
+2024-08-26 13:03:25,076 INFO ? [http-nio-8080-exec-1] [+] 비동기 로깅이 출력이 잘 되는지 확인합니다.
+2024-08-26 13:03:25,076 INFO ? [http-nio-8080-exec-1] [+] 비동기 로깅이 출력이 잘 되는지 확인합니다.
+2024-08-26 13:03:25,076 INFO ? [http-nio-8080-exec-1] [+] 비동기 로깅이 출력이 잘 되는지 확인합니다.
+2024-08-26 13:03:25,076 INFO ? [http-nio-8080-exec-1] [+] 비동기 로깅이 출력이 잘 되는지 확인합니다.
+2024-08-26 13:03:25,076 INFO ? [http-nio-8080-exec-1] [+] 비동기 로깅이 출력이 잘 되는지 확인합니다.
+2024-08-26 13:03:25,076 INFO ? [http-nio-8080-exec-1] [+] 비동기 로깅이 출력이 잘 되는지 확인합니다.
+2024-08-26 13:03:25,076 INFO ? [http-nio-8080-exec-1] [+] 비동기 로깅이 출력이 잘 되는지 확인합니다.
+2024-08-26 13:03:25,076 INFO ? [http-nio-8080-exec-1] [+] 비동기 로깅이 출력이 잘 되는지 확인합니다.
+2024-08-26 13:03:25,076 INFO ? [http-nio-8080-exec-1] [+] 비동기 로깅이 출력이 잘 되는지 확인합니다.
+2024-08-26 13:03:25,076 INFO ? [http-nio-8080-exec-1] [+] 비동기 로깅이 출력이 잘 되는지 확인합니다.
+2024-08-26 13:03:25,076 INFO ? [http-nio-8080-exec-1] [+] 비동기 로깅이 출력이 잘 되는지 확인합니다.
+2024-08-26 13:03:25,076 INFO ? [http-nio-8080-exec-1] [+] 비동기 로깅이 출력이 잘 되는지 확인합니다.
+2024-08-26 13:03:25,076 INFO ? [http-nio-8080-exec-1] [+] 비동기 로깅이 출력이 잘 되는지 확인합니다.
+2024-08-26 13:03:25,076 INFO ? [http-nio-8080-exec-1] [+] 비동기 로깅이 출력이 잘 되는지 확인합니다.
+2024-08-26 13:03:25,076 INFO ? [http-nio-8080-exec-1] [+] 비동기 로깅이 출력이 잘 되는지 확인합니다.
+2024-08-26 13:03:25,076 INFO ? [http-nio-8080-exec-1] [+] 비동기 로깅이 출력이 잘 되는지 확인합니다.
+2024-08-26 13:03:25,076 INFO ? [http-nio-8080-exec-1] [+] 비동기 로깅이 출력이 잘 되는지 확인합니다.
+2024-08-26 13:03:25,076 INFO ? [http-nio-8080-exec-1] [+] 비동기 로깅이 출력이 잘 되는지 확인합니다.
+2024-08-26 13:03:25,076 INFO ? [http-nio-8080-exec-1] [+] 비동기 로깅이 출력이 잘 되는지 확인합니다.
+2024-08-26 13:03:25,076 INFO ? [http-nio-8080-exec-1] [+] 비동기 로깅이 출력이 잘 되는지 확인합니다.
+2024-08-26 13:03:25,076 INFO ? [http-nio-8080-exec-1] [+] 비동기 로깅이 출력이 잘 되는지 확인합니다.
+2024-08-26 13:03:25,076 INFO ? [http-nio-8080-exec-1] [+] 비동기 로깅이 출력이 잘 되는지 확인합니다.
