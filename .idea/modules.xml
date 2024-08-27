@@ -3,6 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/blog.iml" filepath="$PROJECT_DIR$/.idea/blog.iml" />
+      <module fileurl="file://$PROJECT_DIR$/spring-async/spring-async.iml" filepath="$PROJECT_DIR$/spring-async/spring-async.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/spring-scheudler.main.iml" filepath="$PROJECT_DIR$/.idea/modules/spring-scheudler.main.iml" />
     </modules>
   </component>
 </project>
