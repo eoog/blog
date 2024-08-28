@@ -8,6 +8,7 @@ class SpringAsyncApplicationTests {
 
   @Test
   void contextLoads() {
+
   }
 
 }
