@@ -8,6 +8,9 @@ class SpringFcmApplicationTests {
 
   @Test
   void contextLoads() {
+
+
+
   }
 
 }
