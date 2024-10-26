@@ -2,18 +2,34 @@ spring:
   application:
     name: spring-chat
 
+#db
+  datasource:
+    url: jdbc:mysql://localhost:3306/campus?serverTimezone=Asia/Seoul&useSSL=false&allowPublicKeyRetrieval=true
+    username: root
+    password: 1234
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
 
 # oauth
-
   security:
     oauth2:
       client:
         registration:
           kakao:
-            client-id: # 카카오 레스트 ip
-            client-secret: #카카오 시크릿키
+            client-id:
+            client-secret:
             scope:
               - profile_nickname
+              - account_email
+              - name
+              - gender
+              - birthday
+              - birthyear
+              - phone_number
             redirect-uri: "http://localhost:8080/login/oauth2/code/kakao"
             client-name: kakao
             authorization-grant-type: authorization_code
