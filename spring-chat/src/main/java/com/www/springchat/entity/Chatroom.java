@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
@@ -26,5 +27,19 @@ public class Chatroom {
     Set<MemberCatroomMapping> memberCatroomMappings;
     ;
     LocalDateTime createAt;
+
+    public MemberCatroomMapping addMember(Member member) {
+        if (this.getMemberCatroomMappings() == null) {
+            this.memberCatroomMappings = new HashSet<>();
+        }
+
+        MemberCatroomMapping memberCatroomMapping = MemberCatroomMapping.builder()
+                .member(member)
+                .chatroom(this)
+                .build();
+
+        this.memberCatroomMappings.add(memberCatroomMapping);
+        return memberCatroomMapping;
+    }
 
 }
