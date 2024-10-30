@@ -35,7 +35,7 @@ public class ChatService {
 
         // 채팅방 만든 본인 참여 테이블
         MemberCatroomMapping memberCatroomMapping = chatroom.addMember(member);
-        
+
         memberCatroomMapping = memberChatRoomMappingRepository.save(memberCatroomMapping);
         
         
