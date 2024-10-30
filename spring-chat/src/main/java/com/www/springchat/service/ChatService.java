@@ -8,6 +8,7 @@ import com.www.springchat.repositors.MemberChatRoomMappingRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -33,10 +34,7 @@ public class ChatService {
         chatroom = chatRoomRepository.save(chatroom);
 
         // 채팅방 만든 본인 참여 테이블
-        MemberCatroomMapping memberCatroomMapping = MemberCatroomMapping.builder()
-                .member(member)
-                .chatroom(chatroom)
-                .build();
+        MemberCatroomMapping memberCatroomMapping = chatroom.addMember(member);
         
         memberCatroomMapping = memberChatRoomMappingRepository.save(memberCatroomMapping);
         
@@ -69,6 +67,8 @@ public class ChatService {
 
 
     // 채팅방 나가기
+    // jakarta.persistence.TransactionRequiredException: No EntityManager with actual transaction available for current thread - cannot reliably process 'remove' call
+    @Transactional
     public Boolean leaveChatroom(Member member, Long chatroomId) {
 
         // 기존 참여 했는지 학인한느 방
@@ -78,6 +78,7 @@ public class ChatService {
         }
 
         // 참여기록 지움
+        // 삭제할땐 트랜잭션 있어야해..
         memberChatRoomMappingRepository.deleteByMemberIdAndChatroomId(member.getId(),chatroomId);
 
         return  true;

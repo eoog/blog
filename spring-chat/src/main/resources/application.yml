@@ -1,3 +1,12 @@
+
+server:
+  servlet:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true # 인코딩 할때!! UTF-8 변환
+
+
 spring:
   application:
     name: spring-chat

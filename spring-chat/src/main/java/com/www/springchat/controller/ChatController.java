@@ -1,5 +1,6 @@
 package com.www.springchat.controller;
 
+import com.www.springchat.dto.ChatroomDto;
 import com.www.springchat.entity.Chatroom;
 import com.www.springchat.service.ChatService;
 import com.www.springchat.vo.CustomOAuth2User;
@@ -20,8 +21,10 @@ public class ChatController {
     private final ChatService chatService;
 
     @PostMapping
-    public Chatroom createChatroom(@AuthenticationPrincipal CustomOAuth2User user , @RequestParam String title) {
-        return chatService.createChatroom(user.getMember() , title);
+    public ChatroomDto createChatroom(@AuthenticationPrincipal CustomOAuth2User user , @RequestParam String title) {
+
+        Chatroom chatroom = chatService.createChatroom(user.getMember() , title);
+        return ChatroomDto.from(chatroom);
     }
 
     @PostMapping("/{chatroomId}")
@@ -35,7 +38,11 @@ public class ChatController {
     }
 
     @GetMapping
-    public List<Chatroom> getList(@AuthenticationPrincipal CustomOAuth2User user) {
-        return chatService.getChatroomList(user.getMember());
+    public List<ChatroomDto> getList(@AuthenticationPrincipal CustomOAuth2User user) {
+        List<Chatroom> chatroomList =  chatService.getChatroomList(user.getMember());
+
+        return chatroomList.stream()
+                .map(chatroom -> ChatroomDto.from(chatroom))
+                .toList();
     }
 }
