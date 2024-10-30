@@ -7,7 +7,7 @@
         <option name="externalProjectPath" value="$PROJECT_DIR$/spring-Log4j2" />
         <option name="modules">
           <set>
-            <option value="$PROJECT_DIR$/spring-Log4j2" />
+            <option value="$PROJECT_DIR$/spring-log4j2" />
           </set>
         </option>
       </GradleProjectSettings>
