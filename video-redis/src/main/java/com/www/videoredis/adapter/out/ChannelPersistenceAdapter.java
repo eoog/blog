@@ -8,9 +8,10 @@ import com.www.videoredis.application.port.out.LoadChannelPort;
 import com.www.videoredis.domain.channel.Channel;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-@Service
+@Component
 @RequiredArgsConstructor
 public class ChannelPersistenceAdapter implements LoadChannelPort {
 

@@ -1,6 +1,7 @@
 package com.www.videoredis.adapter.out.redis.channel;
 
 import com.www.videoredis.adapter.out.jpa.channel.ChannelJpaEntity;
+import com.www.videoredis.domain.channel.Channel;
 import java.io.Serializable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,4 +16,11 @@ public class ChannelRedisHash implements Serializable {
   public static ChannelRedisHash fromEntity(ChannelJpaEntity jpaEntity) {
     return new ChannelRedisHash(jpaEntity.getId());
   }
+
+  public Channel toDomain() {
+    return Channel.builder()
+        .id(this.getId())
+        .build();
+  }
+
 }

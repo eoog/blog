@@ -1,13 +1,16 @@
 package com.www.videoredis.domain.channel;
 
+import com.www.videoredis.adapter.in.api.dto.ChannelSnippetRequest;
 import com.www.videoredis.adapter.out.jpa.channel.ChannelJpaEntity;
 import com.www.videoredis.adapter.out.redis.channel.ChannelRedisHash;
 import com.www.videoredis.domain.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Builder
 public class Channel {
@@ -22,9 +25,11 @@ public class Channel {
             .build();
     }
 
-    public static Channel from(ChannelJpaEntity channel) {
-        return Channel.builder()
-            .id(channel.getId())
+    public void updateSnippet(ChannelSnippetRequest snippet) {
+        this.snippet = ChannelSnippet.builder()
+            .title(snippet.getTitle())
+            .description(snippet.getDescription())
+            .thumbnailUrl(snippet.getThumbnailUrl())
             .build();
     }
 }
