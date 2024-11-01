@@ -2,6 +2,7 @@ package com.www.back.service;
 
 import com.www.back.entity.User;
 import com.www.back.repository.UserRepository;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,5 +28,10 @@ public class UserService {
   // 회원 탈퇴 기능
   public void deleteUser(Long id) {
     userRepository.deleteById(id);
+  }
+
+  // 전체 회원 조회 기능
+  public List<User> getUserS() {
+    return userRepository.findAll();
   }
 }
