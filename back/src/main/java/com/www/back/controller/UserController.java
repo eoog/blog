@@ -5,6 +5,7 @@ import com.www.back.service.UserService;
 import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,6 +31,7 @@ public class UserController {
   }
 
   // 2. 회원 탈퇴 기능
+  @DeleteMapping("/{userId}")
   public ResponseEntity<Void> deleteUser(
       @Parameter(description = "유저 아이디 를 통한 삭제" , required = true)
       @PathVariable Long userId
