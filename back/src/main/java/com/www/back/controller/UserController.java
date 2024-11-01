@@ -6,6 +6,8 @@ import com.www.back.jwt.JwtUtil;
 import com.www.back.service.CustomUserDetailsService;
 import com.www.back.service.UserService;
 import io.swagger.v3.oas.annotations.Parameter;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -71,10 +73,19 @@ public class UserController {
 
   // 4. 로그인
   @PostMapping("/login")
-  public String login(@RequestParam String username, @RequestParam String password) {
-    Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+  public String login(@RequestParam String username, @RequestParam String password , HttpServletResponse response) {
+    // 시큐리티 인증
+    authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
     UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-    return jwtUtil.generateToken(userDetails.getUsername());
+
+    String token = jwtUtil.generateToken(userDetails.getUsername());
+    Cookie cookie = new Cookie("onion_token", token);
+    cookie.setHttpOnly(true);
+    cookie.setPath("/");
+    cookie.setMaxAge(60 * 60);
+
+    response.addCookie(cookie);
+    return token;
   }
 
   // 5. 토큰 검증
@@ -84,6 +95,16 @@ public class UserController {
     if (!jwtUtil.validateToken(token)) {
       throw new ResponseStatusException(HttpStatus.FORBIDDEN , "Token is not validation");
     }
+  }
+
+  // 6. 로그아웃 기능
+  @PostMapping("/logout")
+  public void logout(HttpServletResponse response) {
+    Cookie cookie = new Cookie("onion_token", null);
+    cookie.setHttpOnly(true);
+    cookie.setPath("/");
+    cookie.setMaxAge(0); // 쿠키 삭제
+    response.addCookie(cookie);
   }
 
 }
