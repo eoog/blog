@@ -15,11 +15,17 @@ public class UserService {
     this.userRepository = userRepository;
   }
 
+  // 회원 가입 기능
   public User createUser(String username, String password , String email) {
     User user = new User();
     user.setUsername(username);
     user.setPassword(password);
     user.setEmail(email);
     return userRepository.save(user);
+  }
+
+  // 회원 탈퇴 기능
+  public void deleteUser(Long id) {
+    userRepository.deleteById(id);
   }
 }
