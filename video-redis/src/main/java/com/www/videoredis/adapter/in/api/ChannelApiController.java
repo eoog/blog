@@ -3,6 +3,7 @@ package com.www.videoredis.adapter.in.api;
 import com.www.videoredis.adapter.in.api.dto.ChannelRequest;
 import com.www.videoredis.application.port.in.ChannelUseCase;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.redis.connection.ReactiveRedisConnection.CommandResponse;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -22,8 +23,10 @@ public class ChannelApiController {
   }
 
   @PostMapping
-  public void createChannel(@RequestBody ChannelRequest channelRequest) {
-    channelUseCase.createChannel(channelRequest);
+  public CommandResponse createChannel(@RequestBody ChannelRequest channelRequest) {
+    var channel = channelUseCase.createChannel(channelRequest);
+
+    return new CommandResponse(channel.getId(),null);
   }
   
   @PutMapping("/{channelId}")

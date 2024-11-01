@@ -36,4 +36,6 @@ public class VideoApiController {
   public void increaseVideoViewCount(@PathVariable String videoId) {
     videoUseCase.increaseViewCount(videoId);
   }
+
+
 }
