@@ -4,10 +4,16 @@ import com.www.back.dto.SignUpUser;
 import com.www.back.entity.User;
 import com.www.back.jwt.JwtUtil;
 import com.www.back.service.CustomUserDetailsService;
+import com.www.back.service.JwtBlacklistService;
 import com.www.back.service.UserService;
 import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +24,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -38,15 +45,17 @@ public class UserController {
   private final UserService userService;
   private final JwtUtil jwtUtil;
   private final CustomUserDetailsService userDetailsService;
+  private final JwtBlacklistService jwtBlacklistService;
 
 
   @Autowired
   public UserController(UserService userService, AuthenticationManager authenticationManager,
-      JwtUtil jwtUtil, CustomUserDetailsService userDetailsService) {
+      JwtUtil jwtUtil, CustomUserDetailsService userDetailsService , JwtBlacklistService jwtBlacklistService) {
     this.userService = userService;
     this.authenticationManager = authenticationManager;
     this.jwtUtil = jwtUtil;
     this.userDetailsService = userDetailsService;
+    this.jwtBlacklistService = jwtBlacklistService;
   }
 
   @PostMapping("/signUp")
@@ -107,4 +116,43 @@ public class UserController {
     response.addCookie(cookie);
   }
 
+  // 7. 모든 계정 로그아웃
+  public void logout(@RequestParam(required = false) String requestToken , @CookieValue(value = "onion_token",required = false) String cookieToken,
+      HttpServletRequest request, HttpServletResponse response) {
+    // 생성
+    String token = null;
+    // Authorzition 검증할때
+    String bearerToken = request.getHeader("Authorization");
+
+    // 토큰 설정
+    // 내가 원하는 유저의 token 을 적용
+    if (requestToken != null) {
+      token = requestToken;
+      // 웹브라우저상 쿠키에 등록된 토큰
+    } else if (cookieToken != null) {
+      token = cookieToken;
+      // Header 부분에 적용한 토큰
+    } else if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
+      token = bearerToken.substring(7);
+    }
+
+    // 날짜 비교하기 현재 시간으로
+    Instant instant = new Date().toInstant();
+
+    // 시스템 default 로 날짜 생성 ( 위에랑 비교하기 위해)
+    LocalDateTime expirationTime = instant.atZone(ZoneId.systemDefault()).toLocalDateTime();
+
+    // 토큰을 사용하여 username 얻기
+    String username = jwtUtil.getUserFromToken(token);
+
+    // logout/all 은 여러대가 생겨서 모두 로그아웃
+    jwtBlacklistService.blacklistToken(token,expirationTime,username);
+
+    // 토큰 제거
+    Cookie cookie = new Cookie("onion_token", null);
+    cookie.setHttpOnly(true);
+    cookie.setPath("/");
+    cookie.setMaxAge(0); // 쿠키 삭제
+    response.addCookie(cookie);
+  }
 }

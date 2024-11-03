@@ -48,4 +48,12 @@ public class JwtUtil {
 
   }
 
+  // 토큰을 이용하여 이용시간 가져오기
+  public Date getExpirationDateFromToken(String token) {
+    Claims claims = Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token)
+        .getBody();
+
+    return claims.getExpiration();
+  }
+
 }
