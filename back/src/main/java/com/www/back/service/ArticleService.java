@@ -11,6 +11,7 @@ import com.www.back.exception.ResourceNotFoundException;
 import com.www.back.repository.ArticleRepository;
 import com.www.back.repository.BoardRepository;
 import com.www.back.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -39,6 +40,7 @@ public class ArticleService {
   }
 
   // 1. 게시글 작성
+  @Transactional
   public Article writeArticle(Long boardId, WriteArticleDto writeArticleDto) {
 
     // 시큐리티 로그인으로 가입한 유저 조회
@@ -92,6 +94,7 @@ public class ArticleService {
   }
 
   // 게시글 수정 !!
+  @Transactional
   public Article editArticle(Long boardId, Long articleId, EditArticleDto dto) {
 
     // 시큐리티 로그인으로 가입한 유저 조회
@@ -138,7 +141,9 @@ public class ArticleService {
     articleRepository.save(article.get());
     return article.get();
   }
-  
+
+  // 게시글 삭제
+  @Transactional
   public Boolean deleteArticle(Long boardId, Long articleId) {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     UserDetails userDetails = (UserDetails) authentication.getPrincipal();
