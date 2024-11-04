@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ArticleRepository extends JpaRepository<Article, Long> {
 
+  // 게시글 조회
   @Query("SELECT a FROM Article a WHERE a.board.id = :boardId ORDER BY a.createdDate DESC")
   List<Article> findTop10ByBoardIdOrderByCreatedDateDesc(@Param("boardId") Long boardId);
 
@@ -20,4 +21,13 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
   @Query("SELECT a FROM Article a WHERE a.board.id = :boardId AND a.id > :articleId ORDER BY a.createdDate DESC")
   List<Article> findTop10ByBoardIdAndArticleIdGreaterThanOrderByCreatedDateDesc(@Param("boardId") Long boardId,
       @Param("articleId") Long articleId);
+
+
+  // 게시글 수정
+
+  @Query("SELECT a FROM Article a JOIN a.author u WHERE u.username = :username ORDER BY a.createdDate DESC LIMIT 1")
+  Article findLatestArticleByAuthorUsernameOrderByCreatedDate(@Param("username") String username);
+
+  @Query("SELECT a FROM Article a JOIN a.author u WHERE u.username = :username ORDER BY a.updatedDate DESC LIMIT 1")
+  Article findLatestArticleByAuthorUsernameOrderByUpdatedDate(@Param("username") String username);
 }

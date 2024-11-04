@@ -1,5 +1,6 @@
 package com.www.back.controller;
 
+import com.www.back.dto.EditArticleDto;
 import com.www.back.dto.WriteArticleDto;
 import com.www.back.entity.Article;
 import com.www.back.service.ArticleService;
@@ -10,6 +11,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -31,8 +33,9 @@ public class ArticleController {
 
   // 게시글 작성
   @PostMapping("{boardId}/articles")
-  public ResponseEntity<Article> writeArticle(@RequestBody WriteArticleDto writeArticleDto) {
-      return ResponseEntity.ok(articleService.writeArticle(writeArticleDto));
+  public ResponseEntity<Article> writeArticle( @PathVariable Long boardId,
+                                               @RequestBody WriteArticleDto writeArticleDto) {
+      return ResponseEntity.ok(articleService.writeArticle(boardId , writeArticleDto));
   }
 
   // 게시글 조회
@@ -50,5 +53,12 @@ public class ArticleController {
     }
 
     return ResponseEntity.ok(articleService.firstGetArticle(boardId));
+  }
+
+  // 게시글 수정
+  @PutMapping("/{boardId}/articles/{articleId}")
+  public ResponseEntity<Article> editArticle(@PathVariable Long boardId, @PathVariable Long articleId,
+      @RequestBody EditArticleDto editArticleDto) {
+    return ResponseEntity.ok(articleService.editArticle(boardId, articleId, editArticleDto));
   }
 }
