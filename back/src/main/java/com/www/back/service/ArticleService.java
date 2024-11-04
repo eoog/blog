@@ -49,9 +49,9 @@ public class ArticleService {
     // 시큐리티 인증된 회원 데이터 가져오기
     UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 
-//    if (!this.isCanWriteArticle()) {
-//      throw new RateLimitException("article not written by rate limit");
-//    }
+    if (!this.isCanWriteArticle()) {
+      throw new RateLimitException("article not written by rate limit");
+    }
 
     // 게시글 작성자
     Optional<User> author = userRepository.findByUsername(userDetails.getUsername());
@@ -177,6 +177,9 @@ public class ArticleService {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     UserDetails userDetails = (UserDetails) authentication.getPrincipal();
     Article latestArticle = articleRepository.findLatestArticleByAuthorUsernameOrderByCreatedDate(userDetails.getUsername());
+    if (latestArticle == null) {
+      return true;
+    }
     return this.isDifferenceMoreThanFiveMinutes(latestArticle.getCreatedDate());
   }
 
@@ -185,6 +188,9 @@ public class ArticleService {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     UserDetails userDetails = (UserDetails) authentication.getPrincipal();
     Article latestArticle = articleRepository.findLatestArticleByAuthorUsernameOrderByUpdatedDate(userDetails.getUsername());
+    if (latestArticle == null) {
+      return true;
+    }
     return this.isDifferenceMoreThanFiveMinutes(latestArticle.getUpdatedDate());
   }
 
