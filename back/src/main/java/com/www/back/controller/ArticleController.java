@@ -8,6 +8,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -60,5 +61,12 @@ public class ArticleController {
   public ResponseEntity<Article> editArticle(@PathVariable Long boardId, @PathVariable Long articleId,
       @RequestBody EditArticleDto editArticleDto) {
     return ResponseEntity.ok(articleService.editArticle(boardId, articleId, editArticleDto));
+  }
+
+  // 게시글 삭제
+  @DeleteMapping("/{boardId}/articles/{articleId}")
+  public ResponseEntity<String> deleteArticle(@PathVariable Long boardId, @PathVariable Long articleId) {
+    articleService.deleteArticle(boardId, articleId);
+    return ResponseEntity.ok("article deleted");
   }
 }

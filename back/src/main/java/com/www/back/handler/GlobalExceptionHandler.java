@@ -1,5 +1,6 @@
 package com.www.back.handler;
 
+import com.www.back.exception.ForbiddenException;
 import com.www.back.exception.RateLimitException;
 import com.www.back.exception.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -18,7 +19,13 @@ public class GlobalExceptionHandler {
 
   @ExceptionHandler(RateLimitException.class)
   @ResponseStatus(HttpStatus.FORBIDDEN)
-  public String handleResourceNotFoundException(RateLimitException ex) {
+  public String handleRateLimitException(RateLimitException ex) {
+    return ex.getMessage();
+  }
+
+  @ExceptionHandler(ForbiddenException.class)
+  @ResponseStatus(HttpStatus.FORBIDDEN)
+  public String handleForbiddenException(ForbiddenException ex) {
     return ex.getMessage();
   }
 }

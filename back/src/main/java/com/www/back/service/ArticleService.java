@@ -5,6 +5,7 @@ import com.www.back.dto.WriteArticleDto;
 import com.www.back.entity.Article;
 import com.www.back.entity.Board;
 import com.www.back.entity.User;
+import com.www.back.exception.ForbiddenException;
 import com.www.back.exception.RateLimitException;
 import com.www.back.exception.ResourceNotFoundException;
 import com.www.back.repository.ArticleRepository;
@@ -116,6 +117,9 @@ public class ArticleService {
     // 게시글
     Optional<Article> article = articleRepository.findById(articleId);
 
+    if (article.get().getAuthor() != author.get()) {
+      throw new ForbiddenException("article author different");
+    }
     if (article.isEmpty()) {
       throw new ResourceNotFoundException("article not found");
     }
@@ -133,6 +137,34 @@ public class ArticleService {
 
     articleRepository.save(article.get());
     return article.get();
+  }
+  
+  public Boolean deleteArticle(Long boardId, Long articleId) {
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+    Optional<User> author = userRepository.findByUsername(userDetails.getUsername());
+    Optional<Board> board = boardRepository.findById(boardId);
+    if (author.isEmpty()) {
+      throw new ResourceNotFoundException("author not found");
+    }
+    if (board.isEmpty()) {
+      throw new ResourceNotFoundException("board not found");
+    }
+    Optional<Article> article = articleRepository.findById(articleId);
+    if (article.isEmpty()) {
+      throw new ResourceNotFoundException("article not found");
+    }
+    if (article.get().getAuthor() != author.get()) {
+      throw new ForbiddenException("article author different");
+    }
+    if (!this.isCanEditArticle()) {
+      throw new RateLimitException("article not edited by rate limit");
+    }
+    
+    // 삭제 true 변경
+    article.get().setIsDeleted(true);
+    articleRepository.save(article.get());
+    return true;
   }
 
   // 게시글 작성 여부 확인 최신생설날자
@@ -152,7 +184,7 @@ public class ArticleService {
   }
 
   // 게시글 작성한지 5분이상 지났는지 확인
-  public boolean isDifferenceMoreThanFiveMinutes(LocalDateTime localDateTime) {
+  private boolean isDifferenceMoreThanFiveMinutes(LocalDateTime localDateTime) {
     LocalDateTime dateAsLocalDateTime = new Date().toInstant()
         .atZone(ZoneId.systemDefault())
         .toLocalDateTime();
@@ -161,4 +193,5 @@ public class ArticleService {
 
     return Math.abs(duration.toMinutes()) > 5;
   }
+  
 }
