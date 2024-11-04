@@ -16,8 +16,12 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -96,5 +100,46 @@ public class CommentService {
     Duration duration = Duration.between(localDateTime, dateAsLocalDateTime);
 
     return Math.abs(duration.toMinutes()) > 1;
+  }
+
+  // 기사 조회
+  @Async
+  protected CompletableFuture<Article> getArticle(Long boardId , Long articleId) {
+    // 게시판 조회
+    Optional<Board> board = boardRepository.findById(boardId);
+    if (board.isEmpty()) {
+      throw new ResourceNotFoundException("board not found");
+    }
+    // 기사 조회
+    Optional<Article> article = articleRepository.findById(articleId);
+    if (article.isEmpty()) {
+      throw new ResourceNotFoundException("article not found");
+    }
+    return CompletableFuture.completedFuture(article.get());
+  }
+
+  // 기사의 모든 댓글
+  @Async
+  protected CompletableFuture<List<Comment>> getComments(Long articleId) {
+    return CompletableFuture.completedFuture(commentRepository.findByArticleId(articleId));
+  }
+
+  // 게시판 및 댓글 모두 가져오기
+  public CompletableFuture<Article> getArticleWithComments(Long boardId , Long articleId) {
+    CompletableFuture<Article> articleCompletableFuture = this.getArticle(boardId,articleId);
+    CompletableFuture<List<Comment>> commentsCompletableFuture = this.getComments(articleId);
+
+    return CompletableFuture.allOf(articleCompletableFuture,commentsCompletableFuture)
+        .thenApply(voidResult -> {
+          try {
+            Article article = articleCompletableFuture.get();
+            List<Comment> commentList = commentsCompletableFuture.get();
+            article.setComments(commentList);
+            return article;
+          } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+            return null;
+          }
+        });
   }
 }

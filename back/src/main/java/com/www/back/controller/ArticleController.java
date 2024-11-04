@@ -4,7 +4,10 @@ import com.www.back.dto.EditArticleDto;
 import com.www.back.dto.WriteArticleDto;
 import com.www.back.entity.Article;
 import com.www.back.service.ArticleService;
+import com.www.back.service.CommentService;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -24,12 +27,14 @@ public class ArticleController {
 
   private final AuthenticationManager authenticationManager;
   private final ArticleService articleService;
+  private final CommentService commentService;
 
   @Autowired
   public ArticleController(AuthenticationManager authenticationManager,
-      ArticleService articleService) {
+      ArticleService articleService , CommentService commentService) {
     this.authenticationManager = authenticationManager;
     this.articleService = articleService;
+    this.commentService = commentService;
   }
 
   // 게시글 작성
@@ -69,4 +74,15 @@ public class ArticleController {
     articleService.deleteArticle(boardId, articleId);
     return ResponseEntity.ok("article deleted");
   }
+
+  // 게시글과 댓글 전체 가져오기
+  @GetMapping("/{boardId}/articles/{articleId}")
+  public ResponseEntity<Article> getArticleWithComment(
+      @PathVariable Long boardId,
+      @PathVariable Long articleId
+  ) throws ExecutionException, InterruptedException {
+    CompletableFuture<Article> article = commentService.getArticleWithComments(boardId, articleId);
+    return ResponseEntity.ok(article.get());
+  }
+
 }
