@@ -5,6 +5,7 @@ import com.www.back.entity.Comment;
 import com.www.back.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -43,5 +44,13 @@ public class CommentController {
       @RequestBody WriteComment editCommentDto) {
     return ResponseEntity.ok(commentService.editComment(boardId, articleId, commentId, editCommentDto));
   }
-    
+
+  // 댓글 삭제
+  @DeleteMapping("/{boardId}/articles/{articleId}/comments/{commentId}")
+  public ResponseEntity<String> writeComment(@PathVariable Long boardId,
+      @PathVariable Long articleId,
+      @PathVariable Long commentId) {
+    commentService.deleteComment(boardId, articleId, commentId);
+    return ResponseEntity.ok("comment is deleted");
+  }
 }
