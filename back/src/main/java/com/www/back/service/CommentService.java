@@ -12,6 +12,7 @@ import com.www.back.repository.ArticleRepository;
 import com.www.back.repository.BoardRepository;
 import com.www.back.repository.CommentRepository;
 import com.www.back.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -45,13 +46,14 @@ public class CommentService {
   }
 
   // 댓글 작성
+  @Transactional
   public Comment writeComment(Long boardId, Long articleId , WriteComment dto) {
     // 사용자 계정 조회
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 
     if (!this.isCanWriteComment()) {
-      throw new RateLimitException("article not written by rate limit");
+      throw new RateLimitException("comment not written by rate limit");
     }
 
     Optional<User> author = userRepository.findByUsername(userDetails.getUsername());
@@ -79,6 +81,41 @@ public class CommentService {
 
   }
 
+  @Transactional
+  public Comment editComment(Long boardId, Long articleId, Long commentId, WriteComment dto) {
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+    if (!this.isCanEditComment()) {
+      throw new RateLimitException("comment not written by rate limit");
+    }
+    Optional<User> author = userRepository.findByUsername(userDetails.getUsername());
+    Optional<Board> board = boardRepository.findById(boardId);
+    Optional<Article> article = articleRepository.findById(articleId);
+    if (author.isEmpty()) {
+      throw new ResourceNotFoundException("author not found");
+    }
+    if (board.isEmpty()) {
+      throw new ResourceNotFoundException("board not found");
+    }
+    if (article.isEmpty()) {
+      throw new ResourceNotFoundException("article not found");
+    }
+    if (article.get().getIsDeleted()) {
+      throw new ForbiddenException("article is deleted");
+    }
+    Optional<Comment> comment = commentRepository.findById(commentId);
+    if (comment.isEmpty() || comment.get().getIsDeleted()) {
+      throw new ResourceNotFoundException("comment not found");
+    }
+    if (comment.get().getAuthor() != author.get()) {
+      throw new ForbiddenException("comment author different");
+    }
+    if (dto.getContent() != null) {
+      comment.get().setContent(dto.getContent());
+    }
+    commentRepository.save(comment.get());
+    return comment.get();
+  }
 
   // 작성 확인
   private boolean isCanWriteComment() {
@@ -89,6 +126,16 @@ public class CommentService {
       return true;
     }
     return this.isDifferenceMoreThanOneMinutes(latestComment.getCreatedDate());
+  }
+
+  private boolean isCanEditComment() {
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+    Comment latestComment = commentRepository.findLatestCommentOrderByCreatedDate(userDetails.getUsername());
+    if (latestComment == null || latestComment.getUpdatedDate() == null) {
+      return true;
+    }
+    return this.isDifferenceMoreThanOneMinutes(latestComment.getUpdatedDate());
   }
 
   // 댓글 단지 1분이내 확인
