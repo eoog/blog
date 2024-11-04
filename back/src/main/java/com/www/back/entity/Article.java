@@ -1,5 +1,6 @@
 package com.www.back.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.ConstraintMode;
 import jakarta.persistence.Entity;
@@ -46,6 +47,7 @@ public class Article {
 
   // 게시판
   @ManyToOne
+  @JsonIgnore
   @JoinColumn(foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
   private Board board;
 

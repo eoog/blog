@@ -8,6 +8,7 @@ import com.www.back.exception.ResourceNotFoundException;
 import com.www.back.repository.ArticleRepository;
 import com.www.back.repository.BoardRepository;
 import com.www.back.repository.UserRepository;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -62,5 +63,20 @@ public class ArticleService {
     article.setContent(writeArticleDto.getContent());
     articleRepository.save(article);
     return article;
+  }
+
+  // 게시글 최신 게시글 10개 가져오기
+  public List<Article> firstGetArticle(Long boardId) {
+    return articleRepository.findTop10ByBoardIdOrderByCreatedDateDesc(boardId);
+  }
+
+  // 게시글 예전꺼 10개 가져오기
+  public List<Article> getOldArticle(Long boardId, Long articleId) {
+    return articleRepository.findTop10ByBoardIdAndArticleIdLessThanOrderByCreatedDateDesc(boardId,articleId);
+  }
+
+  // 게시글 새로운 10개 가져오기
+  public List<Article> getNewArticle(Long boardId, Long articleId) {
+    return articleRepository.findTop10ByBoardIdAndArticleIdGreaterThanOrderByCreatedDateDesc(boardId, articleId);
   }
 }
