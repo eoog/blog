@@ -3,8 +3,10 @@ package com.www.springchat.service;
 import com.www.springchat.entity.Chatroom;
 import com.www.springchat.entity.Member;
 import com.www.springchat.entity.MemberCatroomMapping;
+import com.www.springchat.entity.Message;
 import com.www.springchat.repositors.ChatRoomRepository;
 import com.www.springchat.repositors.MemberChatRoomMappingRepository;
+import com.www.springchat.repositors.MessageRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -20,6 +22,7 @@ public class ChatService {
 
     private final ChatRoomRepository chatRoomRepository;
     private final MemberChatRoomMappingRepository memberChatRoomMappingRepository;
+    private final MessageRepository messageRepository;
 
 
     // 채팅방생성
@@ -91,5 +94,23 @@ public class ChatService {
         return memberCatroomMappings.stream()
                 .map(memberCatroomMapping -> memberCatroomMapping.getChatroom())
                 .toList();
+    }
+
+    // 메시지 저장
+    public Message saveMessage(Member member , Long chatroomId , String text) {
+        Chatroom chatroom = chatRoomRepository.findById(chatroomId).get();
+
+        Message message = Message.builder()
+            .text(text)
+            .member(member)
+            .chatroom(chatroom)
+            .build();
+
+        return messageRepository.save(message);
+    }
+
+    // 특정 채팅방 작성된 메시지 가져오기
+    public List<Message> getMessageList(Long chatroomId) {
+        return messageRepository.findAllByChatroomId(chatroomId);
     }
 }

@@ -1,7 +1,10 @@
 package com.www.springchat.controller;
 
+import com.www.springchat.dto.ChatMessage;
 import com.www.springchat.dto.ChatroomDto;
 import com.www.springchat.entity.Chatroom;
+import com.www.springchat.entity.Member;
+import com.www.springchat.entity.Message;
 import com.www.springchat.service.ChatService;
 import com.www.springchat.vo.CustomOAuth2User;
 import lombok.RequiredArgsConstructor;
@@ -44,5 +47,15 @@ public class ChatController {
         return chatroomList.stream()
                 .map(chatroom -> ChatroomDto.from(chatroom))
                 .toList();
+    }
+
+    // 특정 채팅방 메시지
+    @GetMapping("/{chatroomId}/message")
+    public List<ChatMessage> getMessageList(@PathVariable Long chatroomId) {
+        List<Message> messageList = chatService.getMessageList(chatroomId);
+
+        return messageList.stream()
+            .map(message -> new ChatMessage(message.getMember().getNickName(),message.getText()))
+            .toList();
     }
 }

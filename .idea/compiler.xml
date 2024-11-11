@@ -11,9 +11,5 @@
         <module name="video-redis.main" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="video-redis.main" target="17" />
-      <module name="video-redis.test" target="17" />
-    </bytecodeTargetLevel>
   </component>
 </project>

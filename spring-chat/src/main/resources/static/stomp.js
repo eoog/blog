@@ -46,11 +46,6 @@ function sendMessage() {
     $("#message").val("")
 }
 
-function showMessage(chatMessage) {
-    $("#messages").append(
-        "<tr><td>" + chatMessage.sender + " : " + chatMessage.message
-        + "</td></tr>");
-}
 
 // 채팅방 생성
 function createChatroom() {
@@ -94,6 +89,7 @@ let subscription;
 function enterChatroom(chatroomId, newMember) {
     $("#chatroom-id").val(chatroomId); // 채팅방 아이디
     $("#messages").html(""); // 기존 메시지 지움
+    showMessages(chatroomId); // 과거 메시지 가져오기
     $("#conversation").show(); // 메시지 표시 열고
     $("#send").prop("disabled", false);
     $("#leave").prop("disabled", false);
@@ -129,6 +125,30 @@ function renderChatrooms(chatrooms) {
         + chatrooms[i].memberCount + "</td><td>" + chatrooms[i].createdAt + "</td></tr>"
     )
   }
+}
+
+function showMessages(chatroomId) {
+    $.ajax({
+        type:"GET",
+        dataType:"json",
+        url:"/chats/" + chatroomId + '/message',
+        success : function (data) {
+            console.log("data : " , data);
+            for (let i = 0; i < data.length; i++) {
+                showMessage(data[i]);
+            }
+        },
+        error: function (request, status, error) {
+            console.log("request :", request);
+            console.log("error :", error);
+        }
+    })
+}
+
+function showMessage(chatMessage) {
+    $("#messages").append(
+        "<tr><td>" + chatMessage.sender + " : " + chatMessage.message
+        + "</td></tr>");
 }
 
 function joinChatroom(chatroomId) {
