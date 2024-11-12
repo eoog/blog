@@ -46,16 +46,21 @@ public class ChatService {
     }
     
     // 참여 여부 확인
-    public Boolean joinChatroom(Member member, Long chatroomId) {
+    public Boolean joinChatroom(Member member, Long newChatroomId , Long currentChatroomId) {
+
+        // 이전에 있던 방에다가 있던 시간 기록
+        if (currentChatroomId != null) {
+               updateLastCheckedAt(member,currentChatroomId);
+        }
 
         // 참여 여부 확인
-        if (memberChatRoomMappingRepository.existsByMemberIdAndChatroomId(member.getId(),chatroomId)) {
+        if (memberChatRoomMappingRepository.existsByMemberIdAndChatroomId(member.getId(),newChatroomId)) {
             log.info("이미 참여한 채팅방입니다.");
             return false;
         }
 
         // 채팅방 검색
-        Chatroom chatroom = chatRoomRepository.findById(chatroomId).get();
+        Chatroom chatroom = chatRoomRepository.findById(newChatroomId).get();
 
         // 채팅방 참여
         MemberCatroomMapping memberCatroomMapping =  MemberCatroomMapping.builder()
@@ -66,6 +71,14 @@ public class ChatService {
         memberCatroomMapping = memberChatRoomMappingRepository.save(memberCatroomMapping);
         
         return true;
+    }
+
+    private void updateLastCheckedAt(Member member, Long currentChatroomId) {
+        MemberCatroomMapping memberCatroomMapping = memberChatRoomMappingRepository.findByMemberIdAndChatroomId(member.getId(),currentChatroomId).get();
+
+        memberCatroomMapping.updateLastCheckedAt();
+
+        memberChatRoomMappingRepository.save(memberCatroomMapping);
     }
 
 
@@ -92,7 +105,11 @@ public class ChatService {
         List<MemberCatroomMapping> memberCatroomMappings = memberChatRoomMappingRepository.findAllByMemberId(member.getId());
 
         return memberCatroomMappings.stream()
-                .map(memberCatroomMapping -> memberCatroomMapping.getChatroom())
+                .map(memberCatroomMapping -> {
+                    Chatroom chatroom = memberCatroomMapping.getChatroom();
+                    chatroom.setHasNewMessage(messageRepository.existsByChatroomIdAndCreatedAtAfter(chatroom.getId(),memberCatroomMapping.getLastCheckedAt())); // 채팅방아이디가 마지막으로 확인체크한 날짜!
+                    return chatroom;
+                    })
                 .toList();
     }
 
@@ -104,6 +121,7 @@ public class ChatService {
             .text(text)
             .member(member)
             .chatroom(chatroom)
+            .createdAt(LocalDateTime.now())
             .build();
 
         return messageRepository.save(message);

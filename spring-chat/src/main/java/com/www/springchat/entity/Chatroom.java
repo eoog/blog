@@ -9,11 +9,14 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
+import lombok.Setter;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Builder
 @Entity
+@Setter
 public class Chatroom {
 
     @Id
@@ -25,7 +28,11 @@ public class Chatroom {
 
     @OneToMany(mappedBy = "chatroom")
     Set<MemberCatroomMapping> memberCatroomMappings;
-    ;
+    
+    // DB 에는 적용되지 않음
+    @Transient
+    Boolean hasNewMessage;
+    
     LocalDateTime createAt;
 
     public MemberCatroomMapping addMember(Member member) {
