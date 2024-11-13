@@ -60,6 +60,7 @@ public class NoticeService {
     userNotificationHistory.setTitle("공지사항이 작성되었습니다.");
     userNotificationHistory.setContent(notice.get().getTitle());
     userNotificationHistory.setUserId(user.get().getId());
+    userNotificationHistory.setNoticeId(noticeId);
     userNotificationHistory.setIsRead(true);
     userNotificationHistory.setCreatedDate(notice.get().getCreatedDate());
     userNotificationHistory.setUpdatedDate(LocalDateTime.now());

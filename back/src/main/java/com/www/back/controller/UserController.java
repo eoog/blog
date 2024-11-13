@@ -2,6 +2,7 @@ package com.www.back.controller;
 
 import com.www.back.dto.SignUpUser;
 import com.www.back.entity.User;
+import com.www.back.entity.UserNotificationHistory;
 import com.www.back.jwt.JwtUtil;
 import com.www.back.service.CustomUserDetailsService;
 import com.www.back.service.JwtBlacklistService;
@@ -166,5 +167,10 @@ public class UserController {
   @ResponseStatus(HttpStatus.OK)
   public void readHistory(@RequestParam String historyId) {
     userNotificationHistoryService.readNotification(historyId);
+  }
+
+  @GetMapping("/history")
+  public ResponseEntity<List<UserNotificationHistory>> getHistoryList() {
+    return ResponseEntity.ok(userNotificationHistoryService.getNotificationList());
   }
 }
