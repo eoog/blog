@@ -1,5 +1,7 @@
 package com.www.back.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.www.back.dto.WriteComment;
 import com.www.back.entity.Article;
 import com.www.back.entity.Board;
@@ -35,14 +37,18 @@ public class CommentService {
   private final ArticleRepository articleRepository;
   private final CommentRepository commentRepository;
   private final UserRepository userRepository;
+  private final ElasticSearchService elasticSearchService;
+  private final ObjectMapper objectMapper;
 
   @Autowired
   public CommentService(BoardRepository boardRepository, ArticleRepository articleRepository,
-      CommentRepository commentRepository, UserRepository userRepository) {
+      CommentRepository commentRepository, UserRepository userRepository, ObjectMapper objectMapper, ElasticSearchService elasticSearchService) {
     this.boardRepository = boardRepository;
     this.articleRepository = articleRepository;
     this.commentRepository = commentRepository;
     this.userRepository = userRepository;
+    this.elasticSearchService = elasticSearchService;
+    this.objectMapper = objectMapper;
   }
 
   // 댓글 작성
@@ -186,7 +192,9 @@ public class CommentService {
 
   // 기사 조회
   @Async
-  protected CompletableFuture<Article> getArticle(Long boardId , Long articleId) {
+  @Transactional
+  protected CompletableFuture<Article> getArticle(Long boardId , Long articleId)
+      throws JsonProcessingException {
     // 게시판 조회
     Optional<Board> board = boardRepository.findById(boardId);
     if (board.isEmpty()) {
@@ -197,6 +205,11 @@ public class CommentService {
     if (article.isEmpty()) {
       throw new ResourceNotFoundException("article not found");
     }
+    // 일라스틱 서치에 등록
+    article.get().setViewCount(article.get().getViewCount() + 1);
+    articleRepository.save(article.get());
+    String articleJson = objectMapper.writeValueAsString(article.get());
+    elasticSearchService.indexArticleDocument(article.get().getId().toString(), articleJson).block();
     return CompletableFuture.completedFuture(article.get());
   }
 
@@ -207,7 +220,8 @@ public class CommentService {
   }
 
   // 게시판 및 댓글 모두 가져오기
-  public CompletableFuture<Article> getArticleWithComments(Long boardId , Long articleId) {
+  public CompletableFuture<Article> getArticleWithComments(Long boardId , Long articleId)
+      throws JsonProcessingException {
     CompletableFuture<Article> articleCompletableFuture = this.getArticle(boardId,articleId);
     CompletableFuture<List<Comment>> commentsCompletableFuture = this.getComments(articleId);
 

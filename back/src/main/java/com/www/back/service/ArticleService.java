@@ -1,5 +1,7 @@
 package com.www.back.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.www.back.dto.EditArticleDto;
 import com.www.back.dto.WriteArticleDto;
 import com.www.back.entity.Article;
@@ -18,11 +20,13 @@ import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.ExecutionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Mono;
 
 @Service
 public class ArticleService {
@@ -31,17 +35,23 @@ public class ArticleService {
   private final ArticleRepository articleRepository;
   private final UserRepository userRepository;
 
+  private final ElasticSearchService elasticSearchService;
+  private final ObjectMapper objectMapper;
+
   @Autowired
   public ArticleService(BoardRepository boardRepository, ArticleRepository articleRepository,
-      UserRepository userRepository) {
+      UserRepository userRepository, ElasticSearchService elasticSearchService, ObjectMapper objectMapper) {
     this.boardRepository = boardRepository;
     this.articleRepository = articleRepository;
     this.userRepository = userRepository;
+    this.elasticSearchService = elasticSearchService;
+    this.objectMapper = objectMapper;
   }
 
   // 1. 게시글 작성
   @Transactional
-  public Article writeArticle(Long boardId, WriteArticleDto writeArticleDto) {
+  public Article writeArticle(Long boardId, WriteArticleDto writeArticleDto)
+      throws JsonProcessingException {
 
     // 시큐리티 로그인으로 가입한 유저 조회
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -75,6 +85,7 @@ public class ArticleService {
     article.setTitle(writeArticleDto.getTitle());
     article.setContent(writeArticleDto.getContent());
     articleRepository.save(article);
+    this.indexArticle(article);
     return article;
   }
 
@@ -95,7 +106,8 @@ public class ArticleService {
 
   // 게시글 수정 !!
   @Transactional
-  public Article editArticle(Long boardId, Long articleId, EditArticleDto dto) {
+  public Article editArticle(Long boardId, Long articleId, EditArticleDto dto)
+      throws JsonProcessingException {
 
     // 시큐리티 로그인으로 가입한 유저 조회
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -139,12 +151,13 @@ public class ArticleService {
     }
 
     articleRepository.save(article.get());
+    this.indexArticle(article.get());
     return article.get();
   }
 
   // 게시글 삭제
   @Transactional
-  public Boolean deleteArticle(Long boardId, Long articleId) {
+  public Boolean deleteArticle(Long boardId, Long articleId) throws JsonProcessingException {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     UserDetails userDetails = (UserDetails) authentication.getPrincipal();
     Optional<User> author = userRepository.findByUsername(userDetails.getUsername());
@@ -169,6 +182,7 @@ public class ArticleService {
     // 삭제 true 변경
     article.get().setIsDeleted(true);
     articleRepository.save(article.get());
+    this.indexArticle(article.get());
     return true;
   }
 
@@ -204,5 +218,24 @@ public class ArticleService {
 
     return Math.abs(duration.toMinutes()) > 5;
   }
+
+
+  // 일라스틱 서치 검색
+
+  public String indexArticle(Article article) throws JsonProcessingException {
+    String articleJson = objectMapper.writeValueAsString(article);
+    return elasticSearchService.indexArticleDocument(article.getId().toString(), articleJson).block();
+  }
+
+
+  public List<Article> searchArticle(String keyword) {
+    Mono<List<Long>> articleIds = elasticSearchService.articleSearch(keyword);
+    try {
+      return articleRepository.findAllById(articleIds.toFuture().get());
+    } catch (InterruptedException | ExecutionException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
   
 }
