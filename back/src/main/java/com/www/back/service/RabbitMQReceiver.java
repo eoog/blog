@@ -33,6 +33,7 @@ public class RabbitMQReceiver {
   public void receive(String message) {
 
     if (message.contains(WriteComment.class.getSimpleName())) {
+      System.out.println(WriteComment.class.getSimpleName());
       this.sendCommentNotification(message);
       return;
     }
