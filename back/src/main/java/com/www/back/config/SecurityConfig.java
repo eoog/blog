@@ -35,9 +35,12 @@ public class SecurityConfig {
     http
         .csrf(AbstractHttpConfigurer::disable) // cros-oring 미사용
         .authorizeHttpRequests((request) ->
-            request.requestMatchers("/swagger-ui/**" , "/v3/api-docs/**" , "/api/users/signUp" , "/api/users/login").permitAll()
+            request.requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/api/users/signUp",
+                    "/api/users/login", "/api/ads", "/api/ads/**").permitAll()
                 .anyRequest().authenticated()
-            ).addFilterBefore(new JwtAuthenticationFilter(jwtUtil, userDetailsService,jwtBlacklistService) , UsernamePasswordAuthenticationFilter.class);
+        ).addFilterBefore(
+            new JwtAuthenticationFilter(jwtUtil, userDetailsService, jwtBlacklistService),
+            UsernamePasswordAuthenticationFilter.class);
 
     return http.build();
   }
@@ -50,7 +53,8 @@ public class SecurityConfig {
 
   @Bean
   public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
-    AuthenticationManagerBuilder authManagerBuilder = http.getSharedObject(AuthenticationManagerBuilder.class);
+    AuthenticationManagerBuilder authManagerBuilder = http.getSharedObject(
+        AuthenticationManagerBuilder.class);
     authManagerBuilder
         .userDetailsService(userDetailsService)
         .passwordEncoder(passwordEncoder());
