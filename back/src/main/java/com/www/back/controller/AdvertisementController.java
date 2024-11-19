@@ -1,5 +1,6 @@
 package com.www.back.controller;
 
+import com.www.back.dto.AdHistoryResult;
 import com.www.back.dto.AdvertisementDto;
 import com.www.back.entity.Advertisement;
 import com.www.back.service.AdvertisementService;
@@ -67,5 +68,13 @@ public class AdvertisementController {
     String ipAddress = request.getRemoteAddr();
     advertisementService.clickAd(adId, ipAddress);
     return ResponseEntity.ok("click");
+  }
+
+  // 광고 본사람들 내역 확인
+  @GetMapping("/ads/history")
+  public ResponseEntity<List<AdHistoryResult>> getAdHistory() {
+    List<AdHistoryResult> result = advertisementService.getAdViewHistoryGroupByAdId();
+    advertisementService.insertAdViewStat(result);
+    return ResponseEntity.ok(result);
   }
 }
