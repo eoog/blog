@@ -16,7 +16,7 @@ public class DailyStatTasks {
     this.advertisementService = advertisementService;
   }
 
-  @Scheduled(cron = "* * * * * ?")
+  @Scheduled(cron = "* * * 3 * ?")
   public void insertAdViewStatAtMidnight() {
     System.out.println("start");
     List<AdHistoryResult> viewResult = advertisementService.getAdViewHistoryGroupByAdId();

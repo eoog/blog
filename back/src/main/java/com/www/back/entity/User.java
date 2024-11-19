@@ -2,6 +2,7 @@ package com.www.back.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -9,6 +10,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import lombok.Getter;
@@ -56,11 +58,18 @@ public class User implements UserDetails {
   @LastModifiedDate
   private LocalDateTime updateDate;
 
+  @Column(columnDefinition = "json")
+  @Convert(converter = DeviceListConverter.class)
+  private List<Device> deviceList = new ArrayList<>();
+
   // 이 애너테이션은 엔티티가 데이터베이스에 처음 저장되기 전에 호출됩니다.
   // onCreate 메서드는 엔티티가 처음 저장될 때 createdDate 필드에 현재 시간을 설정합니다. 이는 엔티티가 생성된 날짜와 시간을 기록하는 데 사용됩니다.
   @PrePersist
   protected void onCreate() {
     this.createdDate = LocalDateTime.now();
+    if (deviceList == null) {
+      deviceList = new ArrayList<>(); // 기본값을 빈 배열로 설정
+    }
   }
 
   // 이 애너테이션은 엔티티가 데이터베이스에 업데이트되기 전에 호출됩니다.
