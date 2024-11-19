@@ -1,7 +1,10 @@
 package com.www.springchat.controller;
 
+import com.www.springchat.dto.ChatMessage;
 import com.www.springchat.dto.ChatroomDto;
 import com.www.springchat.entity.Chatroom;
+import com.www.springchat.entity.Member;
+import com.www.springchat.entity.Message;
 import com.www.springchat.service.ChatService;
 import com.www.springchat.vo.CustomOAuth2User;
 import lombok.RequiredArgsConstructor;
@@ -28,8 +31,8 @@ public class ChatController {
     }
 
     @PostMapping("/{chatroomId}")
-    public Boolean joinChatroom(@PathVariable Long chatroomId, @AuthenticationPrincipal CustomOAuth2User user) {
-        return chatService.joinChatroom(user.getMember(),chatroomId);
+    public Boolean joinChatroom(@PathVariable Long chatroomId, @AuthenticationPrincipal CustomOAuth2User user , @RequestParam(required = false) Long currentChatroomId) {
+        return chatService.joinChatroom(user.getMember(),chatroomId , currentChatroomId);
     }
 
     @DeleteMapping("/{chatroomId}")
@@ -44,5 +47,15 @@ public class ChatController {
         return chatroomList.stream()
                 .map(chatroom -> ChatroomDto.from(chatroom))
                 .toList();
+    }
+
+    // 특정 채팅방 메시지
+    @GetMapping("/{chatroomId}/message")
+    public List<ChatMessage> getMessageList(@PathVariable Long chatroomId) {
+        List<Message> messageList = chatService.getMessageList(chatroomId);
+
+        return messageList.stream()
+            .map(message -> new ChatMessage(message.getMember().getNickName(),message.getText()))
+            .toList();
     }
 }

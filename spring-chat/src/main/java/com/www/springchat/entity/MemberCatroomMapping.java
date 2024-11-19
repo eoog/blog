@@ -1,6 +1,7 @@
 package com.www.springchat.entity;
 
 import jakarta.persistence.*;
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -25,4 +26,12 @@ public class MemberCatroomMapping {
     @JoinColumn(name = "chatroom_id")
     @ManyToOne
     Chatroom chatroom;
+    
+    // 메시지 확인 시간
+    LocalDateTime lastCheckedAt;
+
+
+    public void updateLastCheckedAt() {
+        this.lastCheckedAt = LocalDateTime.now();
+    }
 }
