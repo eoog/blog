@@ -1,6 +1,6 @@
 package com.www.back.controller;
 
-import com.www.back.dto.WriteComment;
+import com.www.back.dto.WriteCommentDto;
 import com.www.back.entity.Comment;
 import com.www.back.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,15 +23,15 @@ public class CommentController {
   public CommentController(CommentService commentService) {
     this.commentService = commentService;
   }
-  
+
   // 댓글 등록
   @PostMapping("/{boardId}/articles/{articleId}/comments")
   public ResponseEntity<Comment> writeComment(
       @PathVariable Long boardId,
       @PathVariable Long articleId,
-      @RequestBody WriteComment writeComment
+      @RequestBody WriteCommentDto writeCommentDto
   ) {
-    return ResponseEntity.ok(commentService.writeComment(boardId,articleId,writeComment));
+    return ResponseEntity.ok(commentService.writeComment(boardId, articleId, writeCommentDto));
   }
 
   // 댓글 조회는 Article 에 같이 나옴
@@ -41,8 +41,9 @@ public class CommentController {
   public ResponseEntity<Comment> writeComment(@PathVariable Long boardId,
       @PathVariable Long articleId,
       @PathVariable Long commentId,
-      @RequestBody WriteComment editCommentDto) {
-    return ResponseEntity.ok(commentService.editComment(boardId, articleId, commentId, editCommentDto));
+      @RequestBody WriteCommentDto editCommentDto) {
+    return ResponseEntity.ok(
+        commentService.editComment(boardId, articleId, commentId, editCommentDto));
   }
 
   // 댓글 삭제

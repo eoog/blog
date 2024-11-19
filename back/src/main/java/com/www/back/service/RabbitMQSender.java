@@ -1,7 +1,9 @@
 package com.www.back.service;
 
 
-import com.www.back.entity.ArticleNotification;
+import com.www.back.pojo.ArticleNotification;
+import com.www.back.pojo.SendCommentNotification;
+import com.www.back.pojo.WriteComment;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,7 +18,17 @@ public class RabbitMQSender {
     this.rabbitTemplate = rabbitTemplate;
   }
 
+  // 게시글 작성
   public void send(ArticleNotification articleNotification) {
     rabbitTemplate.convertAndSend("onion-notification", articleNotification.toString());
+  }
+
+  // 댓글 작성
+  public void send(WriteComment message) {
+    rabbitTemplate.convertAndSend("onion-notification", message.toString());
+  }
+
+  public void send(SendCommentNotification message) {
+    rabbitTemplate.convertAndSend("onion-notification", message.toString());
   }
 }

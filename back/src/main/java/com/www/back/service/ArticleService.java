@@ -5,12 +5,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.www.back.dto.EditArticleDto;
 import com.www.back.dto.WriteArticleDto;
 import com.www.back.entity.Article;
-import com.www.back.entity.ArticleNotification;
 import com.www.back.entity.Board;
 import com.www.back.entity.User;
 import com.www.back.exception.ForbiddenException;
 import com.www.back.exception.RateLimitException;
 import com.www.back.exception.ResourceNotFoundException;
+import com.www.back.pojo.ArticleNotification;
 import com.www.back.repository.ArticleRepository;
 import com.www.back.repository.BoardRepository;
 import com.www.back.repository.UserRepository;
@@ -99,7 +99,7 @@ public class ArticleService {
     articleNotification.setArticleId(article.getId());
     articleNotification.setUserId(author.get().getId());
     rabbitMQSender.send(articleNotification);
-    
+
     return article;
   }
 

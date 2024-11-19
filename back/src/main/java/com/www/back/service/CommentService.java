@@ -2,7 +2,7 @@ package com.www.back.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.www.back.dto.WriteComment;
+import com.www.back.dto.WriteCommentDto;
 import com.www.back.entity.Article;
 import com.www.back.entity.Board;
 import com.www.back.entity.Comment;
@@ -10,6 +10,7 @@ import com.www.back.entity.User;
 import com.www.back.exception.ForbiddenException;
 import com.www.back.exception.RateLimitException;
 import com.www.back.exception.ResourceNotFoundException;
+import com.www.back.pojo.WriteComment;
 import com.www.back.repository.ArticleRepository;
 import com.www.back.repository.BoardRepository;
 import com.www.back.repository.CommentRepository;
@@ -39,21 +40,24 @@ public class CommentService {
   private final UserRepository userRepository;
   private final ElasticSearchService elasticSearchService;
   private final ObjectMapper objectMapper;
+  private final RabbitMQSender rabbitMQSender;
 
   @Autowired
   public CommentService(BoardRepository boardRepository, ArticleRepository articleRepository,
-      CommentRepository commentRepository, UserRepository userRepository, ObjectMapper objectMapper, ElasticSearchService elasticSearchService) {
+      CommentRepository commentRepository, UserRepository userRepository, ObjectMapper objectMapper,
+      ElasticSearchService elasticSearchService, RabbitMQSender rabbitMQSender) {
     this.boardRepository = boardRepository;
     this.articleRepository = articleRepository;
     this.commentRepository = commentRepository;
     this.userRepository = userRepository;
     this.elasticSearchService = elasticSearchService;
     this.objectMapper = objectMapper;
+    this.rabbitMQSender = rabbitMQSender;
   }
 
   // 댓글 작성
   @Transactional
-  public Comment writeComment(Long boardId, Long articleId , WriteComment dto) {
+  public Comment writeComment(Long boardId, Long articleId, WriteCommentDto dto) {
     // 사용자 계정 조회
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     UserDetails userDetails = (UserDetails) authentication.getPrincipal();
@@ -83,13 +87,18 @@ public class CommentService {
     comment.setAuthor(author.get());
     comment.setContent(dto.getContent());
     commentRepository.save(comment);
+
+    // 댓글 작성 알림 RabbitMQ
+    WriteComment writeComment = new WriteComment();
+    writeComment.setCommentId(comment.getId());
+    rabbitMQSender.send(writeComment);
     return comment;
 
   }
 
   // 댓글 수정
   @Transactional
-  public Comment editComment(Long boardId, Long articleId, Long commentId, WriteComment dto) {
+  public Comment editComment(Long boardId, Long articleId, Long commentId, WriteCommentDto dto) {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     UserDetails userDetails = (UserDetails) authentication.getPrincipal();
     if (!this.isCanEditComment()) {
@@ -162,7 +171,8 @@ public class CommentService {
   private boolean isCanWriteComment() {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-    Comment latestComment = commentRepository.findLatestCommentOrderByCreatedDate(userDetails.getUsername());
+    Comment latestComment = commentRepository.findLatestCommentOrderByCreatedDate(
+        userDetails.getUsername());
     if (latestComment == null) {
       return true;
     }
@@ -172,7 +182,8 @@ public class CommentService {
   private boolean isCanEditComment() {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-    Comment latestComment = commentRepository.findLatestCommentOrderByCreatedDate(userDetails.getUsername());
+    Comment latestComment = commentRepository.findLatestCommentOrderByCreatedDate(
+        userDetails.getUsername());
     if (latestComment == null || latestComment.getUpdatedDate() == null) {
       return true;
     }
@@ -193,7 +204,7 @@ public class CommentService {
   // 기사 조회
   @Async
   @Transactional
-  protected CompletableFuture<Article> getArticle(Long boardId , Long articleId)
+  protected CompletableFuture<Article> getArticle(Long boardId, Long articleId)
       throws JsonProcessingException {
     // 게시판 조회
     Optional<Board> board = boardRepository.findById(boardId);
@@ -209,7 +220,8 @@ public class CommentService {
     article.get().setViewCount(article.get().getViewCount() + 1);
     articleRepository.save(article.get());
     String articleJson = objectMapper.writeValueAsString(article.get());
-    elasticSearchService.indexArticleDocument(article.get().getId().toString(), articleJson).block();
+    elasticSearchService.indexArticleDocument(article.get().getId().toString(), articleJson)
+        .block();
     return CompletableFuture.completedFuture(article.get());
   }
 
@@ -220,12 +232,12 @@ public class CommentService {
   }
 
   // 게시판 및 댓글 모두 가져오기
-  public CompletableFuture<Article> getArticleWithComments(Long boardId , Long articleId)
+  public CompletableFuture<Article> getArticleWithComments(Long boardId, Long articleId)
       throws JsonProcessingException {
-    CompletableFuture<Article> articleCompletableFuture = this.getArticle(boardId,articleId);
+    CompletableFuture<Article> articleCompletableFuture = this.getArticle(boardId, articleId);
     CompletableFuture<List<Comment>> commentsCompletableFuture = this.getComments(articleId);
 
-    return CompletableFuture.allOf(articleCompletableFuture,commentsCompletableFuture)
+    return CompletableFuture.allOf(articleCompletableFuture, commentsCompletableFuture)
         .thenApply(voidResult -> {
           try {
             Article article = articleCompletableFuture.get();
