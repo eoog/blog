@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.www.back.dto.EditArticleDto;
 import com.www.back.dto.WriteArticleDto;
 import com.www.back.entity.Article;
+import com.www.back.entity.ArticleNotification;
 import com.www.back.entity.Board;
 import com.www.back.entity.User;
 import com.www.back.exception.ForbiddenException;
@@ -38,14 +39,18 @@ public class ArticleService {
   private final ElasticSearchService elasticSearchService;
   private final ObjectMapper objectMapper;
 
+  private final RabbitMQSender rabbitMQSender;
+
   @Autowired
   public ArticleService(BoardRepository boardRepository, ArticleRepository articleRepository,
-      UserRepository userRepository, ElasticSearchService elasticSearchService, ObjectMapper objectMapper) {
+      UserRepository userRepository, ElasticSearchService elasticSearchService,
+      ObjectMapper objectMapper, RabbitMQSender rabbitMQSender) {
     this.boardRepository = boardRepository;
     this.articleRepository = articleRepository;
     this.userRepository = userRepository;
     this.elasticSearchService = elasticSearchService;
     this.objectMapper = objectMapper;
+    this.rabbitMQSender = rabbitMQSender;
   }
 
   // 1. 게시글 작성
@@ -85,7 +90,16 @@ public class ArticleService {
     article.setTitle(writeArticleDto.getTitle());
     article.setContent(writeArticleDto.getContent());
     articleRepository.save(article);
+
+    // 검색 일라스틱 서치
     this.indexArticle(article);
+
+    // RabbitMq
+    ArticleNotification articleNotification = new ArticleNotification();
+    articleNotification.setArticleId(article.getId());
+    articleNotification.setUserId(author.get().getId());
+    rabbitMQSender.send(articleNotification);
+    
     return article;
   }
 
@@ -96,12 +110,14 @@ public class ArticleService {
 
   // 게시글 예전꺼 10개 가져오기
   public List<Article> getOldArticle(Long boardId, Long articleId) {
-    return articleRepository.findTop10ByBoardIdAndArticleIdLessThanOrderByCreatedDateDesc(boardId,articleId);
+    return articleRepository.findTop10ByBoardIdAndArticleIdLessThanOrderByCreatedDateDesc(boardId,
+        articleId);
   }
 
   // 게시글 새로운 10개 가져오기
   public List<Article> getNewArticle(Long boardId, Long articleId) {
-    return articleRepository.findTop10ByBoardIdAndArticleIdGreaterThanOrderByCreatedDateDesc(boardId, articleId);
+    return articleRepository.findTop10ByBoardIdAndArticleIdGreaterThanOrderByCreatedDateDesc(
+        boardId, articleId);
   }
 
   // 게시글 수정 !!
@@ -178,7 +194,7 @@ public class ArticleService {
     if (!this.isCanEditArticle()) {
       throw new RateLimitException("article not edited by rate limit");
     }
-    
+
     // 삭제 true 변경
     article.get().setIsDeleted(true);
     articleRepository.save(article.get());
@@ -190,7 +206,8 @@ public class ArticleService {
   private boolean isCanWriteArticle() {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-    Article latestArticle = articleRepository.findLatestArticleByAuthorUsernameOrderByCreatedDate(userDetails.getUsername());
+    Article latestArticle = articleRepository.findLatestArticleByAuthorUsernameOrderByCreatedDate(
+        userDetails.getUsername());
     if (latestArticle == null) {
       return true;
     }
@@ -201,7 +218,8 @@ public class ArticleService {
   private boolean isCanEditArticle() {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-    Article latestArticle = articleRepository.findLatestArticleByAuthorUsernameOrderByUpdatedDate(userDetails.getUsername());
+    Article latestArticle = articleRepository.findLatestArticleByAuthorUsernameOrderByUpdatedDate(
+        userDetails.getUsername());
     if (latestArticle == null || latestArticle.getUpdatedDate() == null) {
       return true;
     }
@@ -219,12 +237,12 @@ public class ArticleService {
     return Math.abs(duration.toMinutes()) > 5;
   }
 
-
   // 일라스틱 서치 검색
 
   public String indexArticle(Article article) throws JsonProcessingException {
     String articleJson = objectMapper.writeValueAsString(article);
-    return elasticSearchService.indexArticleDocument(article.getId().toString(), articleJson).block();
+    return elasticSearchService.indexArticleDocument(article.getId().toString(), articleJson)
+        .block();
   }
 
 
@@ -237,5 +255,5 @@ public class ArticleService {
     }
   }
 
-  
+
 }
