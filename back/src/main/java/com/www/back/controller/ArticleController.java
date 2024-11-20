@@ -32,7 +32,7 @@ public class ArticleController {
 
   @Autowired
   public ArticleController(AuthenticationManager authenticationManager,
-      ArticleService articleService , CommentService commentService) {
+      ArticleService articleService, CommentService commentService) {
     this.authenticationManager = authenticationManager;
     this.articleService = articleService;
     this.commentService = commentService;
@@ -40,10 +40,10 @@ public class ArticleController {
 
   // 게시글 작성
   @PostMapping("{boardId}/articles")
-  public ResponseEntity<Article> writeArticle( @PathVariable Long boardId,
-                                               @RequestBody WriteArticleDto writeArticleDto)
+  public ResponseEntity<Article> writeArticle(@PathVariable Long boardId,
+      @RequestBody WriteArticleDto writeArticleDto)
       throws JsonProcessingException {
-      return ResponseEntity.ok(articleService.writeArticle(boardId , writeArticleDto));
+    return ResponseEntity.ok(articleService.writeArticle(boardId, writeArticleDto));
   }
 
   // 게시글 조회
@@ -54,10 +54,10 @@ public class ArticleController {
   ) {
 
     if (lastId != null) {
-      return ResponseEntity.ok(articleService.getOldArticle(boardId , lastId));
+      return ResponseEntity.ok(articleService.getOldArticle(boardId, lastId));
     }
     if (firstId != null) {
-      return ResponseEntity.ok(articleService.getNewArticle(boardId , firstId));
+      return ResponseEntity.ok(articleService.getNewArticle(boardId, firstId));
     }
 
     return ResponseEntity.ok(articleService.firstGetArticle(boardId));
@@ -76,21 +76,22 @@ public class ArticleController {
 
   // 게시글 수정
   @PutMapping("/{boardId}/articles/{articleId}")
-  public ResponseEntity<Article> editArticle(@PathVariable Long boardId, @PathVariable Long articleId,
+  public ResponseEntity<Article> editArticle(@PathVariable Long boardId,
+      @PathVariable Long articleId,
       @RequestBody EditArticleDto editArticleDto) throws JsonProcessingException {
     return ResponseEntity.ok(articleService.editArticle(boardId, articleId, editArticleDto));
   }
 
   // 게시글 삭제
   @DeleteMapping("/{boardId}/articles/{articleId}")
-  public ResponseEntity<String> deleteArticle(@PathVariable Long boardId, @PathVariable Long articleId)
+  public ResponseEntity<String> deleteArticle(@PathVariable Long boardId,
+      @PathVariable Long articleId)
       throws JsonProcessingException {
     articleService.deleteArticle(boardId, articleId);
     return ResponseEntity.ok("article deleted");
   }
 
   // 게시글과 댓글 전체 가져오기
-  @GetMapping("/{boardId}/articles/{articleId}")
   public ResponseEntity<Article> getArticleWithComment(
       @PathVariable Long boardId,
       @PathVariable Long articleId

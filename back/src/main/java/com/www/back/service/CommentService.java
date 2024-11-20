@@ -6,6 +6,7 @@ import com.www.back.dto.WriteCommentDto;
 import com.www.back.entity.Article;
 import com.www.back.entity.Board;
 import com.www.back.entity.Comment;
+import com.www.back.entity.HotArticle;
 import com.www.back.entity.User;
 import com.www.back.exception.ForbiddenException;
 import com.www.back.exception.RateLimitException;
@@ -15,6 +16,7 @@ import com.www.back.repository.ArticleRepository;
 import com.www.back.repository.BoardRepository;
 import com.www.back.repository.CommentRepository;
 import com.www.back.repository.UserRepository;
+import com.www.back.task.DailyHotArticleTasks;
 import jakarta.transaction.Transactional;
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -25,6 +27,7 @@ import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -42,10 +45,13 @@ public class CommentService {
   private final ObjectMapper objectMapper;
   private final RabbitMQSender rabbitMQSender;
 
+  private RedisTemplate<String, Object> redisTemplate;
+
   @Autowired
   public CommentService(BoardRepository boardRepository, ArticleRepository articleRepository,
       CommentRepository commentRepository, UserRepository userRepository, ObjectMapper objectMapper,
-      ElasticSearchService elasticSearchService, RabbitMQSender rabbitMQSender) {
+      ElasticSearchService elasticSearchService, RabbitMQSender rabbitMQSender,
+      RedisTemplate<String, Object> redisTemplate) {
     this.boardRepository = boardRepository;
     this.articleRepository = articleRepository;
     this.commentRepository = commentRepository;
@@ -53,6 +59,7 @@ public class CommentService {
     this.elasticSearchService = elasticSearchService;
     this.objectMapper = objectMapper;
     this.rabbitMQSender = rabbitMQSender;
+    this.redisTemplate = redisTemplate;
   }
 
   // 댓글 작성
@@ -206,6 +213,28 @@ public class CommentService {
   @Transactional
   protected CompletableFuture<Article> getArticle(Long boardId, Long articleId)
       throws JsonProcessingException {
+
+    Object yesterdayHotArticleTempObj = redisTemplate.opsForHash().get(
+        DailyHotArticleTasks.YESTERDAY_REDIS_KEY + articleId, articleId);
+    Object weekHotArticleTempObj = redisTemplate.opsForHash()
+        .get(DailyHotArticleTasks.WEEK_REDIS_KEY + articleId, articleId);
+    if (yesterdayHotArticleTempObj != null || weekHotArticleTempObj != null) {
+      HotArticle hotArticle = (HotArticle) (yesterdayHotArticleTempObj != null
+          ? yesterdayHotArticleTempObj : weekHotArticleTempObj);
+      Article article = new Article();
+      article.setId(hotArticle.getId());
+      article.setTitle(hotArticle.getTitle());
+      article.setContent(hotArticle.getContent());
+      User user = new User();
+      user.setUsername(hotArticle.getAuthorName());
+      article.setAuthor(user);
+      article.setCreatedDate(hotArticle.getCreatedDate());
+      article.setUpdatedDate(hotArticle.getUpdatedDate());
+      article.setViewCount(hotArticle.getViewCount());
+      return CompletableFuture.completedFuture(article);
+    }
+
+    // redis에 없으면 mysql에서 조회
     // 게시판 조회
     Optional<Board> board = boardRepository.findById(boardId);
     if (board.isEmpty()) {
