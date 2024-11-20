@@ -1,7 +1,9 @@
 package com.www.back.service;
 
+import com.www.back.entity.Article;
 import com.www.back.entity.Comment;
 import com.www.back.pojo.SendCommentNotification;
+import com.www.back.pojo.WriteArticle;
 import com.www.back.pojo.WriteComment;
 import com.www.back.repository.ArticleRepository;
 import com.www.back.repository.CommentRepository;
@@ -20,21 +22,30 @@ public class RabbitMQReceiver {
   private final CommentRepository commentRepository;
   private final ArticleRepository articleRepository;
   private final RabbitMQSender rabbitMQSender;
+  private final UserNotificationHistoryService userNotificationHistoryService;
 
   @Autowired
   public RabbitMQReceiver(CommentRepository commentRepository,
-      ArticleRepository articleRepository, RabbitMQSender rabbitMQSender) {
+      ArticleRepository articleRepository, RabbitMQSender rabbitMQSender,
+      UserNotificationHistoryService userNotificationHistoryService) {
     this.commentRepository = commentRepository;
     this.articleRepository = articleRepository;
     this.rabbitMQSender = rabbitMQSender;
+    this.userNotificationHistoryService = userNotificationHistoryService;
   }
 
   @RabbitListener(queues = "onion-notification")
   public void receive(String message) {
 
+    // 댓글
     if (message.contains(WriteComment.class.getSimpleName())) {
       System.out.println(WriteComment.class.getSimpleName());
       this.sendCommentNotification(message);
+      return;
+    }
+    // 게시글
+    if (message.contains(WriteArticle.class.getSimpleName())) {
+      this.sendArticleNotification(message);
       return;
     }
 
@@ -49,6 +60,30 @@ public class RabbitMQReceiver {
       }
     }, 5000);
 
+  }
+
+  private void sendArticleNotification(String message) {
+    message = message.replace("WriteArticle(", "").replace(")", "");
+    String[] parts = message.split(", ");
+    String type = null;
+    Long articleId = null;
+    Long userId = null;
+    for (String part : parts) {
+      String[] keyValue = part.split("=");
+      String key = keyValue[0].trim();
+      String value = keyValue[1].trim();
+      if (key.equals("type")) {
+        type = value;
+      } else if (key.equals("articleId")) {
+        articleId = Long.parseLong(value);
+      } else if (key.equals("userId")) {
+        userId = Long.parseLong(value);
+      }
+    }
+    Optional<Article> article = articleRepository.findById(articleId);
+    if (article.isPresent()) {
+      userNotificationHistoryService.insertArticleNotification(article.get(), userId);
+    }
   }
 
   private void sendCommentNotification(String message) {
@@ -90,6 +125,7 @@ public class RabbitMQReceiver {
     for (Long userId : userSet) {
       sendCommentNotification.setUserId(userId);
       rabbitMQSender.send(sendCommentNotification);
+      userNotificationHistoryService.insertCommentNotification(comment.get(), userId);
     }
   }
 

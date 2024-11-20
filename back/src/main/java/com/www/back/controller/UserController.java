@@ -5,6 +5,7 @@ import com.www.back.entity.User;
 import com.www.back.jwt.JwtUtil;
 import com.www.back.service.CustomUserDetailsService;
 import com.www.back.service.JwtBlacklistService;
+import com.www.back.service.UserNotificationHistoryService;
 import com.www.back.service.UserService;
 import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.servlet.http.Cookie;
@@ -22,7 +23,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -46,16 +46,19 @@ public class UserController {
   private final JwtUtil jwtUtil;
   private final CustomUserDetailsService userDetailsService;
   private final JwtBlacklistService jwtBlacklistService;
-
+  private final UserNotificationHistoryService userNotificationHistoryService;
 
   @Autowired
   public UserController(UserService userService, AuthenticationManager authenticationManager,
-      JwtUtil jwtUtil, CustomUserDetailsService userDetailsService , JwtBlacklistService jwtBlacklistService) {
+      JwtUtil jwtUtil, CustomUserDetailsService userDetailsService,
+      JwtBlacklistService jwtBlacklistService,
+      UserNotificationHistoryService userNotificationHistoryService) {
     this.userService = userService;
     this.authenticationManager = authenticationManager;
     this.jwtUtil = jwtUtil;
     this.userDetailsService = userDetailsService;
     this.jwtBlacklistService = jwtBlacklistService;
+    this.userNotificationHistoryService = userNotificationHistoryService;
   }
 
   @PostMapping("/signUp")
@@ -82,7 +85,8 @@ public class UserController {
 
   // 4. 로그인
   @PostMapping("/login")
-  public String login(@RequestParam String username, @RequestParam String password , HttpServletResponse response) {
+  public String login(@RequestParam String username, @RequestParam String password,
+      HttpServletResponse response) {
     // 시큐리티 인증
     authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
     UserDetails userDetails = userDetailsService.loadUserByUsername(username);
@@ -102,7 +106,7 @@ public class UserController {
   @ResponseStatus(HttpStatus.OK)
   public void jwtTokenValidation(@RequestParam String token) {
     if (!jwtUtil.validateToken(token)) {
-      throw new ResponseStatusException(HttpStatus.FORBIDDEN , "Token is not validation");
+      throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Token is not validation");
     }
   }
 
@@ -117,7 +121,8 @@ public class UserController {
   }
 
   // 7. 모든 계정 로그아웃
-  public void logout(@RequestParam(required = false) String requestToken , @CookieValue(value = "onion_token",required = false) String cookieToken,
+  public void logout(@RequestParam(required = false) String requestToken,
+      @CookieValue(value = "onion_token", required = false) String cookieToken,
       HttpServletRequest request, HttpServletResponse response) {
     // 생성
     String token = null;
@@ -146,7 +151,7 @@ public class UserController {
     String username = jwtUtil.getUserFromToken(token);
 
     // logout/all 은 여러대가 생겨서 모두 로그아웃
-    jwtBlacklistService.blacklistToken(token,expirationTime,username);
+    jwtBlacklistService.blacklistToken(token, expirationTime, username);
 
     // 토큰 제거
     Cookie cookie = new Cookie("onion_token", null);
@@ -154,5 +159,12 @@ public class UserController {
     cookie.setPath("/");
     cookie.setMaxAge(0); // 쿠키 삭제
     response.addCookie(cookie);
+  }
+
+  // 알람 읽기 히스토리 아이디인지,, 유저아이디인지 확인
+  @PostMapping("/history")
+  @ResponseStatus(HttpStatus.OK)
+  public void readHistory(@RequestParam String historyId) {
+    userNotificationHistoryService.readNotification(historyId);
   }
 }
