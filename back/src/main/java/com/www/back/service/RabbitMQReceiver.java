@@ -10,8 +10,6 @@ import com.www.back.repository.CommentRepository;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
-import java.util.Timer;
-import java.util.TimerTask;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,12 +32,24 @@ public class RabbitMQReceiver {
     this.userNotificationHistoryService = userNotificationHistoryService;
   }
 
+  // 이메일
+  @RabbitListener(queues = "send_notification.email")
+  public void emailReceive(String message) {
+    System.out.println("Received Message(email): " + message);
+  }
+
+  // sms
+  @RabbitListener(queues = "send_notification.sms")
+  public void smsReceive(String message) {
+    System.out.println("Received Message(sms): " + message);
+  }
+
+
   @RabbitListener(queues = "onion-notification")
   public void receive(String message) {
-
+    System.out.println("Received Message(onion): " + message);
     // 댓글
     if (message.contains(WriteComment.class.getSimpleName())) {
-      System.out.println(WriteComment.class.getSimpleName());
       this.sendCommentNotification(message);
       return;
     }
@@ -48,18 +58,6 @@ public class RabbitMQReceiver {
       this.sendArticleNotification(message);
       return;
     }
-
-    Timer timer = new Timer();
-
-    // 10초후에 실행될 작업 Timer 등록
-
-    timer.schedule(new TimerTask() {
-      @Override
-      public void run() {
-        System.out.println("Receieved Message: " + message);
-      }
-    }, 5000);
-
   }
 
   private void sendArticleNotification(String message) {

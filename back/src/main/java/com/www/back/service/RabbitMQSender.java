@@ -28,7 +28,8 @@ public class RabbitMQSender {
     rabbitTemplate.convertAndSend("onion-notification", message.toString());
   }
 
+  // 댓글 작성자 모두
   public void send(SendCommentNotification message) {
-    rabbitTemplate.convertAndSend("onion-notification", message.toString());
+    rabbitTemplate.convertAndSend("send_notification_exchange", "", message.toString());
   }
 }
