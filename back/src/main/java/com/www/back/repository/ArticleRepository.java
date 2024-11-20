@@ -1,6 +1,7 @@
 package com.www.back.repository;
 
 import com.www.back.entity.Article;
+import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -15,11 +16,13 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
   List<Article> findTop10ByBoardIdOrderByCreatedDateDesc(@Param("boardId") Long boardId);
 
   @Query("SELECT a FROM Article a WHERE a.board.id = :boardId AND a.id < :articleId AND a.isDeleted = false ORDER BY a.createdDate DESC LIMIT 10")
-  List<Article> findTop10ByBoardIdAndArticleIdLessThanOrderByCreatedDateDesc(@Param("boardId") Long boardId,
+  List<Article> findTop10ByBoardIdAndArticleIdLessThanOrderByCreatedDateDesc(
+      @Param("boardId") Long boardId,
       @Param("articleId") Long articleId);
 
   @Query("SELECT a FROM Article a WHERE a.board.id = :boardId AND a.id > :articleId AND a.isDeleted = false ORDER BY a.createdDate DESC LIMIT 10")
-  List<Article> findTop10ByBoardIdAndArticleIdGreaterThanOrderByCreatedDateDesc(@Param("boardId") Long boardId,
+  List<Article> findTop10ByBoardIdAndArticleIdGreaterThanOrderByCreatedDateDesc(
+      @Param("boardId") Long boardId,
       @Param("articleId") Long articleId);
 
   // 게시글 수정
@@ -28,4 +31,9 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
 
   @Query("SELECT a FROM Article a JOIN a.author u WHERE u.username = :username ORDER BY a.updatedDate DESC LIMIT 1")
   Article findLatestArticleByAuthorUsernameOrderByUpdatedDate(@Param("username") String username);
+
+  // 어제의 인기글
+  @Query("SELECT a FROM Article a WHERE a.createdDate >= :startDate AND a.createdDate < :endDate ORDER BY a.viewCount DESC LIMIT 1")
+  Article findHotArticle(@Param("startDate") LocalDateTime startDate,
+      @Param("endDate") LocalDateTime endDate);
 }
