@@ -92,6 +92,7 @@ public class ArticleController {
   }
 
   // 게시글과 댓글 전체 가져오기
+  @GetMapping("/{boardId}/articles/{articleId}")
   public ResponseEntity<Article> getArticleWithComment(
       @PathVariable Long boardId,
       @PathVariable Long articleId

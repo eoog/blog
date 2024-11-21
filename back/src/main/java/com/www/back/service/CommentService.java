@@ -214,6 +214,7 @@ public class CommentService {
   protected CompletableFuture<Article> getArticle(Long boardId, Long articleId)
       throws JsonProcessingException {
 
+    // 어제 인기글 이번주 인기글
     Object yesterdayHotArticleTempObj = redisTemplate.opsForHash().get(
         DailyHotArticleTasks.YESTERDAY_REDIS_KEY + articleId, articleId);
     Object weekHotArticleTempObj = redisTemplate.opsForHash()
