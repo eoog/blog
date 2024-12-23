@@ -27,7 +27,7 @@ public class RabbitMQConfig {
 
   @Bean
   public FanoutExchange fanoutExchange() {
-    return new FanoutExchange("send_notification.exchange");
+    return new FanoutExchange("send_notification_exchange");
   }
 
   @Bean
