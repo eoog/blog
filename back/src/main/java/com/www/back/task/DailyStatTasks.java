@@ -20,6 +20,7 @@ public class DailyStatTasks {
   @Scheduled(cron = "* * * 3 * ?")
   public void insertAdViewStatAtMidnight() {
     System.out.println("start");
+    
     List<AdHistoryResult> viewResult = advertisementService.getAdViewHistoryGroupByAdId();
     advertisementService.insertAdViewStat(viewResult);
     List<AdHistoryResult> clickResult = advertisementService.getAdClickHistoryGroupedByAdId();
