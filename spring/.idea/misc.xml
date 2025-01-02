@@ -4,9 +4,6 @@
   <component name="FrameworkDetectionExcludesConfiguration">
     <file type="web" url="file://$PROJECT_DIR$/spring-promotion" />
   </component>
-  <component name="GitLabDefaultAccount">
-    <option name="defaultAccountId" value="f4bdd7ae-c184-4b75-9419-36c8303a3ba7" />
-  </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_22" default="true" project-jdk-name="openjdk-22" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />
   </component>
