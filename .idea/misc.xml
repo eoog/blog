@@ -2,10 +2,10 @@
 <project version="4">
   <component name="ExternalStorageConfigurationManager" enabled="true" />
   <component name="FrameworkDetectionExcludesConfiguration">
-    <file type="web" url="file://$PROJECT_DIR$/spring-async" />
-    <file type="web" url="file://$PROJECT_DIR$/spring-log4j2" />
-    <file type="web" url="file://$PROJECT_DIR$/spring-scheudler" />
-    <file type="web" url="file://$PROJECT_DIR$/video-redis" />
+    <file type="web" url="file://$PROJECT_DIR$/example/spring-async" />
+    <file type="web" url="file://$PROJECT_DIR$/example/spring-log4j2" />
+    <file type="web" url="file://$PROJECT_DIR$/example/spring-scheudler" />
+    <file type="web" url="file://$PROJECT_DIR$/example/video-redis" />
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_17" default="true" project-jdk-name="corretto-17" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />
