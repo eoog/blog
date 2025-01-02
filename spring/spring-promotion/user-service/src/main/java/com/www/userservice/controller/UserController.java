@@ -82,16 +82,25 @@ public class UserController {
     return ResponseEntity.ok(history);
   }
 
+  /**
+   * 2025.01.02 유저 정보를 찾을수 없을때
+   */
   @ExceptionHandler(UserNotFoundException.class)
   public ResponseEntity<String> handleUserNotFound(UserNotFoundException exception) {
     return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
   }
 
+  /**
+   * 2025.01.02 유저 정보 찾을수 없을때
+   */
   @ExceptionHandler(DuplicateUserException.class)
   public ResponseEntity<String> handleDuplicateUser(DuplicateUserException exception) {
     return ResponseEntity.status(HttpStatus.CONFLICT).body(exception.getMessage());
   }
 
+  /**
+   * 2025.01.02 인증이 안될대
+   */
   @ExceptionHandler(UnauthorizedAccessException.class)
   public ResponseEntity<String> handleUnauthorizedAccess(UnauthorizedAccessException exception) {
     return ResponseEntity.status(HttpStatus.FORBIDDEN).body(exception.getMessage());

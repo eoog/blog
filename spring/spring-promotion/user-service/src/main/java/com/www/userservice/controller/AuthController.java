@@ -1,6 +1,7 @@
 package com.www.userservice.controller;
 
 import com.www.userservice.dto.UserDto;
+import com.www.userservice.dto.UserDto.TokenResponse;
 import com.www.userservice.entity.User;
 import com.www.userservice.service.JWTService;
 import com.www.userservice.service.UserService;
@@ -46,7 +47,8 @@ public class AuthController {
   public ResponseEntity<?> validateToken(
       @RequestBody UserDto.TokenRequest request) {
     Claims claims = jwtService.validateToken(request.getToken());
-    return ResponseEntity.ok(UserDto.TokenResponse.builder()
+    return ResponseEntity.ok(TokenResponse.builder()
+        .id((claims.get("id", Integer.class)))
         .email(claims.getSubject())
         .valid(true)
         .role(claims.get("role", String.class))

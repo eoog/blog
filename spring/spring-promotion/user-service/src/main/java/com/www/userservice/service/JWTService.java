@@ -33,6 +33,7 @@ public class JWTService {
     return Jwts.builder()
         .subject(user.getEmail())
         .claim("role", "USER")
+        .claim("id", user.getId())
         .issuedAt(new Date(currentTimeMillis)) // 발급일
         .expiration(new Date(currentTimeMillis + 3600000)) // 토큰 만료 1시간
         .signWith(Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8)))

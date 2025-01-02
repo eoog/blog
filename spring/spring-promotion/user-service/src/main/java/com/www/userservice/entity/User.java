@@ -10,12 +10,14 @@ import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 @Data
 @Entity
 @Table(name = "users")
+@NoArgsConstructor
 public class User {
 
   @Id

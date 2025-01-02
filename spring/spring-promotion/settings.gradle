@@ -2,3 +2,4 @@ rootProject.name = 'spring-promotion'
 
 include 'discovery-service'
 include 'user-service'
+include 'api-gateway'

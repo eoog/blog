@@ -7,6 +7,7 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$/spring-promotion" />
+            <option value="$PROJECT_DIR$/spring-promotion/api-gateway" />
             <option value="$PROJECT_DIR$/spring-promotion/discovery-service" />
             <option value="$PROJECT_DIR$/spring-promotion/user-service" />
           </set>
