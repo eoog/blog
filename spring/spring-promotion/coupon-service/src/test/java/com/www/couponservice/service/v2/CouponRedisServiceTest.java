@@ -12,7 +12,7 @@ import static org.mockito.Mockito.when;
 import com.www.couponservice.config.UserIdInterceptor;
 import com.www.couponservice.domain.Coupon;
 import com.www.couponservice.domain.CouponPolicy;
-import com.www.couponservice.dto.v1.CouponDto;
+import com.www.couponservice.dto.v2.CouponDto;
 import com.www.couponservice.exception.CouponIssueException;
 import com.www.couponservice.repository.CouponRepository;
 import java.time.LocalDateTime;
@@ -81,7 +81,7 @@ class CouponRedisServiceTest {
   @DisplayName("쿠폰 발급 성공")
   void issueCoupon_Success() throws InterruptedException {
     // Given
-    CouponDto.IssueRequest request = CouponDto.IssueRequest.builder()
+    CouponDto.CouponIssueRequest request = CouponDto.CouponIssueRequest.builder()
         .couponPolicyId(TEST_POLICY_ID)
         .build();
 
@@ -111,7 +111,7 @@ class CouponRedisServiceTest {
   @DisplayName("쿠폰 발급 실패 - 락 획득 실패")
   void issueCoupon_Fail_LockNotAcquired() throws InterruptedException {
     // Given
-    CouponDto.IssueRequest request = CouponDto.IssueRequest.builder()
+    CouponDto.CouponIssueRequest request = CouponDto.CouponIssueRequest.builder()
         .couponPolicyId(TEST_POLICY_ID)
         .build();
 
@@ -128,7 +128,7 @@ class CouponRedisServiceTest {
   @DisplayName("쿠폰 발급 실패 - 수량 소진")
   void issueCoupon_Fail_NoQuantityLeft() throws InterruptedException {
     // Given
-    CouponDto.IssueRequest request = CouponDto.IssueRequest.builder()
+    CouponDto.CouponIssueRequest request = CouponDto.CouponIssueRequest.builder()
         .couponPolicyId(TEST_POLICY_ID)
         .build();
 
@@ -152,7 +152,7 @@ class CouponRedisServiceTest {
   @DisplayName("쿠폰 발급 실패 - 발급 기간 아님")
   void issueCoupon_Fail_InvalidPeriod() throws InterruptedException {
     // Given
-    CouponDto.IssueRequest request = CouponDto.IssueRequest.builder()
+    CouponDto.CouponIssueRequest request = CouponDto.CouponIssueRequest.builder()
         .couponPolicyId(TEST_POLICY_ID)
         .build();
 

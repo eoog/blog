@@ -1,7 +1,7 @@
 package com.www.couponservice.controller.v2;
 
-import com.www.couponservice.dto.v1.CouponDto;
-import com.www.couponservice.dto.v1.CouponDto.Response;
+import com.www.couponservice.dto.v2.CouponDto;
+import com.www.couponservice.dto.v2.CouponDto.CouponResponse;
 import com.www.couponservice.service.v2.CouponService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -17,21 +17,22 @@ import org.springframework.web.bind.annotation.RestController;
 public class CouponController {
 
   private final CouponService couponService;
-
+  
   @PostMapping("/issue")
-  public ResponseEntity<Response> issueCoupon(@RequestBody CouponDto.IssueRequest request) {
+  public ResponseEntity<CouponResponse> issueCoupon(
+      @RequestBody CouponDto.CouponIssueRequest request) {
     return ResponseEntity.ok(couponService.issueCoupon(request));
   }
 
   @PostMapping("/{couponId}/use")
-  public ResponseEntity<CouponDto.Response> useCoupon(
+  public ResponseEntity<CouponDto.CouponResponse> useCoupon(
       @PathVariable Long couponId,
-      @RequestBody CouponDto.UseRequest request) {
+      @RequestBody CouponDto.CouponUseRequest request) {
     return ResponseEntity.ok(couponService.useCoupon(couponId, request.getOrderId()));
   }
 
   @PostMapping("/{couponId}/cancel")
-  public ResponseEntity<CouponDto.Response> cancelCoupon(@PathVariable Long couponId) {
+  public ResponseEntity<CouponDto.CouponResponse> cancelCoupon(@PathVariable Long couponId) {
     return ResponseEntity.ok(couponService.cancelCoupon(couponId));
   }
 }

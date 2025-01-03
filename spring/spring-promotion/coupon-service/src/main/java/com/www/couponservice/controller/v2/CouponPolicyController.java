@@ -1,8 +1,8 @@
 package com.www.couponservice.controller.v2;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.www.couponservice.dto.v1.CouponPolicyDto;
-import com.www.couponservice.dto.v1.CouponPolicyDto.Response;
+import com.www.couponservice.dto.v2.CouponPolicyDto;
+import com.www.couponservice.dto.v2.CouponPolicyDto.Response;
 import com.www.couponservice.service.v2.CouponPolicyService;
 import java.util.List;
 import java.util.stream.Collectors;

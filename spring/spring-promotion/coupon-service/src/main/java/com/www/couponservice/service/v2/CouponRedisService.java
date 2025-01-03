@@ -4,7 +4,7 @@ import com.www.couponservice.aop.CouponMetered;
 import com.www.couponservice.config.UserIdInterceptor;
 import com.www.couponservice.domain.Coupon;
 import com.www.couponservice.domain.CouponPolicy;
-import com.www.couponservice.dto.v1.CouponDto;
+import com.www.couponservice.dto.v2.CouponDto.CouponIssueRequest;
 import com.www.couponservice.exception.CouponIssueException;
 import com.www.couponservice.repository.CouponRepository;
 import java.time.LocalDateTime;
@@ -33,7 +33,7 @@ public class CouponRedisService {
 
   @Transactional
   @CouponMetered(version = "v2")
-  public Coupon issueCoupon(CouponDto.IssueRequest request) {
+  public Coupon issueCoupon(CouponIssueRequest request) {
     String quantityKey = COUPON_QUANTITY_KEY + request.getCouponPolicyId();
     String lockKey = COUPON_LOCK_KEY + request.getCouponPolicyId();
     RLock lock = redissonClient.getLock(lockKey);

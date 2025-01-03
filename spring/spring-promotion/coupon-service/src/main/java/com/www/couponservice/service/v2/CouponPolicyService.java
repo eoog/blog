@@ -3,7 +3,7 @@ package com.www.couponservice.service.v2;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.www.couponservice.domain.CouponPolicy;
-import com.www.couponservice.dto.v1.CouponPolicyDto;
+import com.www.couponservice.dto.v2.CouponPolicyDto;
 import com.www.couponservice.exception.CouponPolicyNotFoundException;
 import com.www.couponservice.repository.CouponPolicyRepository;
 import java.util.List;

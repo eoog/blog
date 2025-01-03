@@ -2,7 +2,7 @@ package com.www.couponservice.service.v2;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.www.couponservice.domain.Coupon;
-import com.www.couponservice.dto.v1.CouponDto;
+import com.www.couponservice.dto.v2.CouponDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.redisson.api.RBucket;
@@ -27,7 +27,7 @@ public class CouponStateService {
   public void updateCouponState(Coupon coupon) {
     try {
       String stateKey = COUPON_STATE_KEY + coupon.getId();
-      String couponJson = objectMapper.writeValueAsString(CouponDto.Response.from(coupon));
+      String couponJson = objectMapper.writeValueAsString(CouponDto.CouponResponse.from(coupon));
       RBucket<String> bucket = redissonClient.getBucket(stateKey);
       bucket.set(couponJson);
 
@@ -45,7 +45,7 @@ public class CouponStateService {
    * @param couponId 상태를 가져올 쿠폰 ID
    * @return 쿠폰 상태, 없으면 null
    */
-  public CouponDto.Response getCouponState(Long couponId) {
+  public CouponDto.CouponResponse getCouponState(Long couponId) {
     try {
       String stateKey = COUPON_STATE_KEY + couponId;
       RBucket<String> bucket = redissonClient.getBucket(stateKey);
@@ -55,7 +55,7 @@ public class CouponStateService {
         return null;
       }
 
-      return objectMapper.readValue(couponJson, CouponDto.Response.class);
+      return objectMapper.readValue(couponJson, CouponDto.CouponResponse.class);
     } catch (Exception e) {
       log.error("Error getting coupon state: {}", e.getMessage(), e);
       throw new RuntimeException("쿠폰 상태 조회 중 오류가 발생했습니다.", e);
