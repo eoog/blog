@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/spring.iml" filepath="$PROJECT_DIR$/.idea/spring.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/api-gateway/spring-promotion.api-gateway.main.iml" filepath="$PROJECT_DIR$/.idea/modules/api-gateway/spring-promotion.api-gateway.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/discovery-service/spring-promotion.discovery-service.main.iml" filepath="$PROJECT_DIR$/.idea/modules/discovery-service/spring-promotion.discovery-service.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/user-service/spring-promotion.user-service.main.iml" filepath="$PROJECT_DIR$/.idea/modules/user-service/spring-promotion.user-service.main.iml" />
     </modules>
