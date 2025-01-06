@@ -18,7 +18,7 @@ __consumer_offsets 8 827
 __consumer_offsets 24 0
 __consumer_offsets 49 0
 __consumer_offsets 3 0
-orderLog 0 32409
+orderLog 0 88709
 __consumer_offsets 40 3
 __consumer_offsets 27 0
 __consumer_offsets 17 0
@@ -44,7 +44,7 @@ __consumer_offsets 42 0
 __consumer_offsets 28 1
 __consumer_offsets 4 0
 anomalies 0 84798
-source_topic 0 32421
+source_topic 0 88721
 __consumer_offsets 31 0
 coupon-issue-requests 0 67086
 __consumer_offsets 5 0
