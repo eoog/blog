@@ -1,0 +1,22 @@
+spring:
+  application:
+    name: msa-graphql
+
+  graphql:
+    path: /graphql
+    graphiql:
+      enabled: true
+      path: /graphiql
+    schema:
+      inspection:
+        enabled: true # 구현이 덜되어있으면 예외
+
+
+
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8000/eureka/
+    register-with-eureka: true
+    fetch-registry: true

@@ -48,7 +48,7 @@ services:
     networks:
       - promotion_network    # 네트워크 추가
     depends_on:
-      - kafka
+          - kafka
 
 networks: # 네트워크 정의 추가
   promotion_network:
