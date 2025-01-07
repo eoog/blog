@@ -1,6 +1,6 @@
 spring:
   application:
-    name: msa-course-service
+    name: msa-user-service
 
   datasource:
     url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1
@@ -40,7 +40,7 @@ jwt:
   secret: 1ad35d74dc65cc0ee9a3a409f7f87e332aa6aa89d9cc64c66cdf9a1ffdc534ee
 
 server:
-  port: 8004
+  port: 8006
 
 #management:
 #  tracing:

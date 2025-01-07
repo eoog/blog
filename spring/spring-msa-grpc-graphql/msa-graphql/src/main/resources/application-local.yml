@@ -10,9 +10,34 @@ spring:
     schema:
       inspection:
         enabled: true # 구현이 덜되어있으면 예외
+  data:
+    redis:
+      host: localhost
+      port: 6380
+      client-type: lettuce
 
-
-
+grpc:
+  client:
+    msa-playback-service:
+      address: 'discovery:///msa-playback-service'
+      enableKeepAlive: true
+      keepAliveWithoutCalls: true
+      negotiationType: plaintext
+    msa-payment-service:
+      address: 'discovery:///msa-enrollment-service'
+      enableKeepAlive: true
+      keepAliveWithoutCalls: true
+      negotiationType: plaintext
+    msa-enrollment-service:
+      address: 'discovery:///msa-enrollment-service'
+      enableKeepAlive: true
+      keepAliveWithoutCalls: true
+      negotiationType: plaintext
+    msa-chat-service:
+      address: 'discovery:///msa-course-chat-service'
+      enableKeepAlive: true
+      keepAliveWithoutCalls: true
+      negotiationType: plaintext
 
 eureka:
   client:
@@ -20,3 +45,8 @@ eureka:
       defaultZone: http://localhost:8000/eureka/
     register-with-eureka: true
     fetch-registry: true
+
+
+logging:
+  pattern:
+    level: "%5p [%X{traceId:-},%X{spanId:-}]"
