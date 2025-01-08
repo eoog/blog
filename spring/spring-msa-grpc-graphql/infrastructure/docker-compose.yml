@@ -33,7 +33,8 @@ services:
       - ./redis-data/redis.conf:/usr/local/etc/redis/redis.conf  # 로컬 설정 파일 마운트
       - redis-data:/data
     command: redis-server /usr/local/etc/redis/redis.conf
-
+    networks:
+      - next-campus-network
   # elasticsearch
   next-campus-elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.10.1
@@ -58,7 +59,8 @@ services:
       - "5601:5601"
     depends_on:
       - next-campus-elasticsearch
-
+    networks:
+      - next-campus-network
 
   # zipkin
   next-campus-zipkin:
@@ -71,7 +73,8 @@ services:
       - "9411:9411"
     depends_on:
       - next-campus-elasticsearch
-
+    networks:
+      - next-campus-network
   # prometheus
   next-campus-prometheus:
     image: prom/prometheus:latest

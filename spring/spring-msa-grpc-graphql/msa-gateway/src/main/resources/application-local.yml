@@ -104,6 +104,16 @@ management:
         include:
           - circuitbreakers
 
+  tracing:
+    sampling:
+      probability: 1.0
+    propagation:
+      consume: b3
+      produce: b3_multi
+  zipkin:
+    tracing:
+      endpoint: "http://localhost:9411/api/v2/spans"
+
 logging:
   level:
     org.springframework.cloud.gateway: TRACE
@@ -116,3 +126,5 @@ logging:
 
 server:
   port: 9000
+
+
