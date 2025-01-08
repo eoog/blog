@@ -108,6 +108,7 @@ services:
       - ./alertmanager/:/etc/alertmanager/  # 로컬 디렉토리를 Alertmanager 설정 파일 디렉토리에 매핑
     networks:
       - back-tier  # back-tier 네트워크에 연결
+      - next-campus-network
     restart: always  # 항상 재시작
     command:
       - '--config.file=/etc/alertmanager/config.yml'  # 설정 파일 경로

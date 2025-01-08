@@ -103,7 +103,13 @@ management:
       exposure:
         include:
           - circuitbreakers
-
+          - info
+          - health
+          - loggers
+          - mappings
+          - metrics
+          - shutdown
+          - prometheus
   tracing:
     sampling:
       probability: 1.0

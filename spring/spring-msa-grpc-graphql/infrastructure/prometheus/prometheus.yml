@@ -52,12 +52,42 @@ scrape_configs:
     static_configs:
       - targets: [ 'node-exporter:9100' ]
 
-  - job_name: 'next-gateway'
+  - job_name: 'msa-gateway'
     metrics_path: '/actuator/prometheus'
     static_configs:
       - targets: [ 'host.docker.internal:9000' ]
 
-  - job_name: 'next-discovery'
+  - job_name: 'msa-discovery'
     metrics_path: '/actuator/prometheus'
     static_configs:
       - targets: [ 'host.docker.internal:8000' ]
+
+  - job_name: 'msa-course-service'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: [ 'host.docker.internal:8001' ]
+
+  - job_name: 'msa-enrollment-service'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: [ 'host.docker.internal:8002' ]
+
+  - job_name: 'msa-file-manage-service'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: [ 'host.docker.internal:8003' ]
+
+  - job_name: 'msa-user-service'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: [ 'host.docker.internal:8004' ]
+
+  - job_name: 'msa-playback-service'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: [ 'host.docker.internal:8005' ]
+
+  - job_name: 'msa-graphql'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: [ 'host.docker.internal:8080' ]

@@ -19,7 +19,19 @@ management:
   zipkin:
     tracing:
       endpoint: "http://localhost:9411/api/v2/spans"
-      
+
+  endpoints:
+    web:
+      exposure:
+        include:
+          - circuitbreakers
+          - info
+          - health
+          - loggers
+          - mappings
+          - metrics
+          - shutdown
+          - prometheus
 eureka:
   client:
     service-url:

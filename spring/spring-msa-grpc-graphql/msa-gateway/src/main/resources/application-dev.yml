@@ -1,3 +1,18 @@
 spring:
   application:
     name: msa-gateway
+
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include:
+          - circuitbreakers
+          - info
+          - health
+          - loggers
+          - mappings
+          - metrics
+          - shutdown
+          - prometheus
