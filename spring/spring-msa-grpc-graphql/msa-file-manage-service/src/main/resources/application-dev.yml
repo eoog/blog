@@ -3,7 +3,7 @@ spring:
     name: msa-file-manage-service
 
   datasource:
-    url: jdbc:mysql://msa-campus-mysql:3306/next_files?useSSL=false&allowPublicKeyRetrieval=true
+    url: jdbc:mysql://msa-campus-mysql:13306/next_files?useSSL=false&allowPublicKeyRetrieval=true
     driverClassName: com.mysql.cj.jdbc.Driver
     username: fast
     password: campus
