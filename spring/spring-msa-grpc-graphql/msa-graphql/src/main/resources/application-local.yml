@@ -61,7 +61,6 @@ management:
     web:
       exposure:
         include:
-          - circuitbreakers
           - info
           - health
           - loggers

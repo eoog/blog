@@ -1,13 +1,47 @@
 spring:
   application:
     name: msa-graphql
-
   graphql:
     path: /graphql
     graphiql:
       enabled: true
       path: /graphiql
+    schema:
+      inspection:
+        enabled: true
+    websocket:
+      path: /graphql
+      keep-alive: 60
+  data:
+    redis:
+      host: next-campus-redis
+      port: 6380
+      client-type: lettuce
 
+eureka:
+  client:
+    service-url:
+      defaultZone: http://msa-discovery:8000/eureka/
+    registerWithEureka: true
+    fetchRegistry: true
+
+grpc:
+  client:
+    msa-playback-service:
+      address: 'discovery:///msa-playback-service'
+      enableKeepAlive: true
+      keepAliveWithoutCalls: true
+      negotiationType: plaintext
+    msa-payment-service:
+      address: 'discovery:///msa-enrollment-service'
+      enableKeepAlive: true
+      keepAliveWithoutCalls: true
+      negotiationType: plaintext
+    msa-enrollment-service:
+      address: 'discovery:///msa-enrollment-service'
+      enableKeepAlive: true
+      keepAliveWithoutCalls: true
+      negotiationType: plaintext
 
 management:
   tracing:
@@ -18,13 +52,11 @@ management:
       produce: b3_multi
   zipkin:
     tracing:
-      endpoint: "http://localhost:9411/api/v2/spans"
-
+      endpoint: "http://next-campus-zipkin:9411/api/v2/spans"
   endpoints:
     web:
       exposure:
         include:
-          - circuitbreakers
           - info
           - health
           - loggers
@@ -32,9 +64,7 @@ management:
           - metrics
           - shutdown
           - prometheus
-eureka:
-  client:
-    service-url:
-      defaultZone: http://localhost:8000/eureka/
-    register-with-eureka: true
-    fetch-registry: true
+
+logging:
+  pattern:
+    level: "%5p [%X{traceId:-},%X{spanId:-}]"

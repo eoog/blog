@@ -3,35 +3,34 @@ spring:
     name: msa-course-service
 
   datasource:
-    url: jdbc:mysql://183.111.67.163:3306/db?useSSL=false&allowPublicKeyRetrieval=true
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    username: db
-    password: db123!@#
-
+    url: jdbc:mysql://next-campus-mysql:3306/next_course?useSSL=false&allowPublicKeyRetrieval=true
+    driverClassName: com.mysql.cj.jdbc.Driver
+    username: fast
+    password: campus
 
   jpa:
-    defer-datasource-initialization: true # hibernate ??? ?? data.sql ???? ??
-    database-platform: org.hibernate.dialect.MySQL8Dialect # mysql ??
-    show-sql: true # sql ?? ????
+    defer-datasource-initialization: true
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    show-sql: true
     hibernate:
-      ddl-auto: none # ?????? ??? ?? ?? ??
+      ddl-auto: none
     properties:
       hibernate:
-        format_sql: true # sql ??? ??? ????
-        use_sql_comments: true # ???? ???
+        format_sql: true
+        use_sql_comments: true
 
   sql:
     init:
-      data-locations: classpath:sql/data.sql # sql ??? /resources/sql/data.sql ??
-      schema-locations: classpath:sql/schema-mysql.sql # ??? ??
+      data-locations: classpath:sql/data.sql
+      schema-locations: classpath:sql/schema-mysql.sql
       mode: never
 
 eureka:
   client:
     service-url:
-      defaultZone: http://msa-discovery:8000/eureka/ # ?????????
-    register-with-eureka: true
-    fetch-registry: true
+      defaultZone: http://msa-discovery:8000/eureka/
+    registerWithEureka: true
+    fetchRegistry: true
 
 management:
   tracing:
@@ -42,7 +41,7 @@ management:
       produce: b3_multi
   zipkin:
     tracing:
-      endpoint: "http://localhost:9411/api/v2/spans"
+      endpoint: "http://next-campus-zipkin:9411/api/v2/spans"
   endpoints:
     web:
       exposure:
@@ -54,3 +53,7 @@ management:
           - metrics
           - shutdown
           - prometheus
+
+logging:
+  pattern:
+    level: "%5p [%X{traceId:-},%X{spanId:-}]"

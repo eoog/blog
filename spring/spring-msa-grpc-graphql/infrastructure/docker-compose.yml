@@ -175,6 +175,88 @@ services:
     restart: always  # 항상 재시작
 
 
+  msa-discovery:
+    image: msa-discovery:latest
+    container_name: msa-discovery
+    ports:
+      - "8000:8000"
+    networks:
+      - next-campus-network
+
+  msa-gateway:
+    image: msa-gateway:latest
+    container_name: msa-gateway
+    depends_on:
+      - msa-discovery
+    ports:
+      - "9000:8080"
+    networks:
+      - next-campus-network
+
+  msa-graphql:
+    image: msa-graphql:latest
+    container_name: msa-graphql
+    ports:
+      - "8080:8080"
+    depends_on:
+      - msa-discovery
+    networks:
+      - next-campus-network
+
+  msa-course-service:
+    image: msa-course-service:latest
+    container_name: msa-course-service
+    ports:
+      - "8081:8080"
+    depends_on:
+      - msa-discovery
+    networks:
+      - next-campus-network
+
+  msa-enrollment-service:
+    image: msa-enrollment-service:latest
+    container_name: msa-enrollment-service
+    ports:
+      - "8082:8080"
+      - "9092:9090" #grpc
+    depends_on:
+      - msa-discovery
+    networks:
+      - next-campus-network
+
+  msa-file-manage-service:
+    image: msa-file-manage-service:latest
+    container_name: msa-file-manage-service
+    ports:
+      - "8083:8080"
+    volumes:
+      - ./videos:/videos
+    depends_on:
+      - msa-discovery
+    networks:
+      - next-campus-network
+
+  msa-playback-service:
+    image: msa-playback-service:latest
+    container_name: msa-playback-service
+    ports:
+      - "8084:8080"
+      - "9094:9090" #grpc
+    depends_on:
+      - msa-discovery
+    networks:
+      - next-campus-network
+
+  msa-user-service:
+    image: msa-user-service:latest
+    container_name: msa-user-service
+    ports:
+      - "8085:8080"
+    depends_on:
+      - msa-discovery
+    networks:
+      - next-campus-network
+
 networks:
   back-tier: # Prometheus 스택 내부 네트워크
     driver: bridge

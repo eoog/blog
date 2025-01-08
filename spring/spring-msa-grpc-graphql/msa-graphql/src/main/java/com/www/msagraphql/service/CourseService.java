@@ -4,6 +4,7 @@ import com.www.msagraphql.model.Course;
 import com.www.msagraphql.model.CourseRating;
 import com.www.msagraphql.model.CourseSession;
 import java.net.URI;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -126,9 +127,10 @@ public class CourseService {
 
   public List<CourseSession> findAllSessionsByCourseId(Long courseId) {
     String url = UriComponentsBuilder.fromUriString(BASE_URL + "/{courseId}/sessions")
-        .buildAndExpand(courseId).toUriString();
+        .buildAndExpand(courseId).encode(StandardCharsets.UTF_8).toUriString();
     CourseSession[] sessions = restTemplate.getForObject(url, CourseSession[].class);
     if (sessions == null) {
+      log.info("zzzzzzzzzzzzzzzzzzzzzz");
       return Collections.emptyList();
     }
 

@@ -2,7 +2,7 @@
 GRAPHQL http://localhost:9000/graphql
 
 mutation {
-    createUser(email: "fast@campus.com", name: "fast", password: "campus") {
+    createUser(email: "fast1@campus.com", name: "fast", password: "campus") {
         email
         id
         name
@@ -38,7 +38,7 @@ GRAPHQL http://localhost:9000/graphql
 Authorization: Bearer {{authToken}}
 
 query {
-    getCourse(courseId: "100", userId: "{{userId}}") {
+    getCourse(courseId: "1000", userId: "1000") {
         description
         id
         instructorId

@@ -3,11 +3,10 @@ spring:
     name: msa-user-service
 
   datasource:
-    url: jdbc:mysql://183.111.67.163:3306/db?useSSL=false&allowPublicKeyRetrieval=true
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    username: db
-    password: db123!@#
-
+    url: jdbc:mysql://next-campus-mysql:3306/next_user?useSSL=false&allowPublicKeyRetrieval=true
+    driverClassName: com.mysql.cj.jdbc.Driver
+    username: fast
+    password: campus
 
   jpa:
     defer-datasource-initialization: true
@@ -30,8 +29,11 @@ eureka:
   client:
     service-url:
       defaultZone: http://msa-discovery:8000/eureka/
-    register-with-eureka: true
-    fetch-registry: true
+    registerWithEureka: true
+    fetchRegistry: true
+
+jwt:
+  secret: 1ad35d74dc65cc0ee9a3a409f7f87e332aa6aa89d9cc64c66cdf9a1ffdc534ee
 
 management:
   tracing:
@@ -42,7 +44,7 @@ management:
       produce: b3_multi
   zipkin:
     tracing:
-      endpoint: "http://localhost:9411/api/v2/spans"
+      endpoint: "http://next-campus-zipkin:9411/api/v2/spans"
   endpoints:
     web:
       exposure:
@@ -54,5 +56,8 @@ management:
           - metrics
           - shutdown
           - prometheus
-jwt:
-  secret: 1ad35d74dc65cc0ee9a3a409f7f87e332aa6aa89d9cc64c66cdf9a1ffdc534ee
+
+
+logging:
+  pattern:
+    level: "%5p [%X{traceId:-},%X{spanId:-}]"
