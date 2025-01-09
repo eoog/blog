@@ -116,6 +116,7 @@ services:
   
   next-campus-node-exporter:
     image: quay.io/prometheus/node-exporter:latest
+    container_name: node-exporter
     volumes:
       - /proc:/host/proc:ro # /proc 디렉토리를 읽기 전용으로 매핑
       - /sys:/host/sys:ro  # /sys 디렉토리를 읽기 전용으로 매핑
@@ -186,7 +187,6 @@ services:
     image: msa-gateway:latest
     container_name: msa-gateway
     depends_on:
-      - next-campus-mysql
       - msa-discovery
     ports:
       - "9000:8080"
@@ -199,7 +199,6 @@ services:
     ports:
       - "8080:8080"
     depends_on:
-      - next-campus-mysql
       - msa-discovery
     networks:
       - next-campus-network
@@ -210,7 +209,6 @@ services:
     ports:
       - "8081:8080"
     depends_on:
-      - next-campus-mysql
       - msa-discovery
     networks:
       - next-campus-network
@@ -222,7 +220,6 @@ services:
       - "8082:8080"
       - "9092:9090" #grpc
     depends_on:
-      - next-campus-mysql
       - msa-discovery
     networks:
       - next-campus-network
@@ -235,7 +232,6 @@ services:
     volumes:
       - ./videos:/videos
     depends_on:
-      - next-campus-mysql
       - msa-discovery
     networks:
       - next-campus-network
@@ -247,7 +243,6 @@ services:
       - "8084:8080"
       - "9094:9090" #grpc
     depends_on:
-      - next-campus-mysql
       - msa-discovery
     networks:
       - next-campus-network
@@ -258,7 +253,6 @@ services:
     ports:
       - "8085:8080"
     depends_on:
-      - next-campus-mysql
       - msa-discovery
     networks:
       - next-campus-network

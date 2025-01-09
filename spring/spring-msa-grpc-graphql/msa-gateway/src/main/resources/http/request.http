@@ -2,7 +2,7 @@
 GRAPHQL http://localhost:9000/graphql
 
 mutation {
-    createUser(email: "fast1@campus.com", name: "fast", password: "campus") {
+    createUser(email: "fast@campus.com", name: "fast", password: "campus") {
         email
         id
         name
