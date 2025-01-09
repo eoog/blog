@@ -1,7 +1,6 @@
 package com.www.msagraphql.resolver;
 
 import com.www.msagraphql.model.CourseSessionFile;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +23,7 @@ public class FileService {
   @Cacheable(value = "files", key = "#sessionId")
   public List<CourseSessionFile> findFilesBySessionId(Long sessionId) {
     String url = UriComponentsBuilder.fromUriString(BASE_URL)
-        .buildAndExpand(sessionId).encode(StandardCharsets.UTF_8).toUriString();
+        .buildAndExpand(sessionId).toUriString();
     CourseSessionFile file = restTemplate.getForObject(url, CourseSessionFile.class);
     return Optional.ofNullable(file).stream().toList();
   }

@@ -12,7 +12,7 @@ services:
     container_name: next-campus-mysql
     restart: always
     ports:
-      - "13306:3306"
+      - "3306:3306"
     environment:
       MYSQL_ROOT_PASSWORD: fast
       TZ: Asia/Seoul
@@ -22,7 +22,6 @@ services:
     platform: linux/x86_64
     networks:
       - next-campus-network
-
 
   # redis
   next-campus-redis:
@@ -187,6 +186,7 @@ services:
     image: msa-gateway:latest
     container_name: msa-gateway
     depends_on:
+      - next-campus-mysql
       - msa-discovery
     ports:
       - "9000:8080"
@@ -199,6 +199,7 @@ services:
     ports:
       - "8080:8080"
     depends_on:
+      - next-campus-mysql
       - msa-discovery
     networks:
       - next-campus-network
@@ -209,6 +210,7 @@ services:
     ports:
       - "8081:8080"
     depends_on:
+      - next-campus-mysql
       - msa-discovery
     networks:
       - next-campus-network
@@ -220,6 +222,7 @@ services:
       - "8082:8080"
       - "9092:9090" #grpc
     depends_on:
+      - next-campus-mysql
       - msa-discovery
     networks:
       - next-campus-network
@@ -232,6 +235,7 @@ services:
     volumes:
       - ./videos:/videos
     depends_on:
+      - next-campus-mysql
       - msa-discovery
     networks:
       - next-campus-network
@@ -243,6 +247,7 @@ services:
       - "8084:8080"
       - "9094:9090" #grpc
     depends_on:
+      - next-campus-mysql
       - msa-discovery
     networks:
       - next-campus-network
@@ -253,6 +258,7 @@ services:
     ports:
       - "8085:8080"
     depends_on:
+      - next-campus-mysql
       - msa-discovery
     networks:
       - next-campus-network
