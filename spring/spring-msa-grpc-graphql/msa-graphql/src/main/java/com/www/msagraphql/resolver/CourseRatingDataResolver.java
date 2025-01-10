@@ -31,7 +31,7 @@ public class CourseRatingDataResolver {
    * CourseRating type > user
    */
   @SchemaMapping(typeName = "CourseRating", field = "user")
-  public User getUser(User user) {
-    return userService.findById(user.getId()).orElseThrow();
+  public User getUser(CourseRating courseRating) {
+    return userService.findById(courseRating.getUserId()).orElseThrow();
   }
 }

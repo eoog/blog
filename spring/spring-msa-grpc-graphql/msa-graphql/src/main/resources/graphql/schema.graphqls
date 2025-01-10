@@ -19,13 +19,13 @@ type Query {
     listCourseSessions(courseId: ID!): [CourseSession]
 
     # 특정 강의에 대한 권한을 가지고 있는지 여부를 체크합니다.
-    checkCourseAccess(userId: ID!, courseId: ID!): Boolean! @authenticate @authorize(role: "user", permission: "read_purchase")
+    checkCourseAccess(userId: ID!, courseId: ID!): Boolean! #    @authenticate @authorize(role: "user", permission: "read_purchase")
 
     # 특정 사용자의 모든 구독 정보를 조회합니다.
-    getUserPlanSubscriptions(userId: ID!): [PlanSubscription] @authenticate @authorize(role: "user", permission: "read_enrollment")
+    getUserPlanSubscriptions(userId: ID!): [PlanSubscription] #@authenticate @authorize(role: "user", permission: "read_enrollment")
 
     # 특정 사용자의 모든 등록 정보를 조회합니다.
-    getUserEnrollments(userId: ID!): [Enrollment] @authenticate @authorize(role: "user", permission: "read_enrollment")
+    getUserEnrollments(userId: ID!): [Enrollment] #@authenticate @authorize(role: "user", permission: "read_enrollment")
 
     # 특정 코스에 대한 메시지를 가져오는 쿼리
     getMessages(courseId: String!): [ChatMessage]

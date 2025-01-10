@@ -59,8 +59,8 @@ spring:
         - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials
         - name: RequestRateLimiter
           args:
-            redis-rate-limiter.replenishRate: 1 # replenishRate는 사용자가 일정 시간 동안(보통 초 단위) 발생시킬 수 있는 요청의 수를 정의
-            redis-rate-limiter.burstCapacity: 5 # burstCapacity는 토큰 버킷이 담을 수 있는 최대 토큰의 수를 정의
+            redis-rate-limiter.replenishRate: 1000 # replenishRate는 사용자가 일정 시간 동안(보통 초 단위) 발생시킬 수 있는 요청의 수를 정의
+            redis-rate-limiter.burstCapacity: 2000 # burstCapacity는 토큰 버킷이 담을 수 있는 최대 토큰의 수를 정의
             key-resolver: "#{@ipKeyResolver}"
 eureka:
   client:
