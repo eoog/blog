@@ -42,7 +42,8 @@ dependencies {
     implementation 'net.devh:grpc-client-spring-boot-starter:3.0.0.RELEASE' // 다른건 서버고 여긴 클라이언트임
     implementation project(':msa-grpc-common')
 
-
+    implementation 'org.springframework.boot:spring-boot-starter-websocket'
+    
     implementation 'org.springframework.boot:spring-boot-starter-cache'
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 

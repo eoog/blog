@@ -1,5 +1,4 @@
 # @authenticate는 사용자가 인증된 경우에만 필드나 객체에 접근할 수 있도록 합니다.
-# GraphqlConfig 에서 등록해줘야함
 directive @authenticate on FIELD_DEFINITION | OBJECT
 
 # @authorize는 사용자가 특정 역할 및 권한을 가지고 있는지 확인합니다.
@@ -19,13 +18,13 @@ type Query {
     listCourseSessions(courseId: ID!): [CourseSession]
 
     # 특정 강의에 대한 권한을 가지고 있는지 여부를 체크합니다.
-    checkCourseAccess(userId: ID!, courseId: ID!): Boolean! #    @authenticate @authorize(role: "user", permission: "read_purchase")
+    checkCourseAccess(userId: ID!, courseId: ID!): Boolean! @authenticate @authorize(role: "user", permission: "read_purchase")
 
     # 특정 사용자의 모든 구독 정보를 조회합니다.
-    getUserPlanSubscriptions(userId: ID!): [PlanSubscription] #@authenticate @authorize(role: "user", permission: "read_enrollment")
+    getUserPlanSubscriptions(userId: ID!): [PlanSubscription] @authenticate @authorize(role: "user", permission: "read_enrollment")
 
     # 특정 사용자의 모든 등록 정보를 조회합니다.
-    getUserEnrollments(userId: ID!): [Enrollment] #@authenticate @authorize(role: "user", permission: "read_enrollment")
+    getUserEnrollments(userId: ID!): [Enrollment] @authenticate @authorize(role: "user", permission: "read_enrollment")
 
     # 특정 코스에 대한 메시지를 가져오는 쿼리
     getMessages(courseId: String!): [ChatMessage]
@@ -102,8 +101,8 @@ type Course {
     title: String!              # 강의 제목
     description: String         # 강의 설명
     instructorId: ID!           # 강사 ID
-    instructor: User            # 강사 정보 << 리졸브 추가해야함
-    courseSessions: [CourseSession]    # 강의에 속한 모든 세션 << 리졸브 추가해야함
+    instructor: User            # 강사 정보
+    courseSessions: [CourseSession]    # 강의에 속한 모든 세션
     ratings: [CourseRating]     # 강의에 대한 사용자 평가
 }
 

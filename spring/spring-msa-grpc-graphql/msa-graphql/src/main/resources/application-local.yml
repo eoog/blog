@@ -10,6 +10,10 @@ spring:
     schema:
       inspection:
         enabled: true # 구현이 덜되어있으면 예외
+    websocket:
+      path: /graphiql
+      keep-alive: 60
+
   data:
     redis:
       host: 127.0.0.1

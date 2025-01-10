@@ -4,6 +4,7 @@ import com.www.msagraphql.model.User;
 import com.www.msagraphql.service.dto.PasswordChangeDTO;
 import com.www.msagraphql.service.dto.UserDTO;
 import java.util.Optional;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -11,6 +12,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 @Service
+@Slf4j
 public class UserService {
 
   private final RestTemplate restTemplate;
@@ -39,6 +41,7 @@ public class UserService {
         .buildAndExpand(userId)
         .toUriString();
     User user = restTemplate.getForObject(url, User.class);
+    log.info("user = {}", user);
     return Optional.ofNullable(user);
   }
 

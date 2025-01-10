@@ -38,8 +38,13 @@ spring:
             - Method=POST,GET,OPTIONS
           filters:
             - AuthenticationFilter
-
-
+        # 웹소켓
+        - id: graphql_subscription_route
+          uri: lb:ws://msa-graphql
+          predicates:
+            - Path=/graphql
+          filters:
+            - AuthenticationFilter
 
       global-cors:
         cors-configurations:
