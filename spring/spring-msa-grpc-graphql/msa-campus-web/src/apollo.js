@@ -1,12 +1,27 @@
-import {ApolloClient, createHttpLink, InMemoryCache} from '@apollo/client/core';
+// src/apollo.js
 import {
-  setContext
-}                                                    from '@apollo/client/link/context';
-import {createApolloProvider}                        from '@vue/apollo-option';
+  ApolloClient,
+  createHttpLink,
+  InMemoryCache,
+  split
+}                          from '@apollo/client/core';
+import {setContext}        from '@apollo/client/link/context';
+import {GraphQLWsLink}     from "@apollo/client/link/subscriptions";
+import {getMainDefinition} from "@apollo/client/utilities";
+import {createClient}      from "graphql-ws";
 
 const httpLink = createHttpLink({
   uri: 'http://localhost:9000/graphql',
 });
+
+const wsLink = new GraphQLWsLink(
+    createClient({
+      url: "ws://localhost:9000/graphql",
+      options: {
+        reconnect: true,
+      },
+    })
+);
 
 const authLink = setContext((_, {headers}) => {
   const token = localStorage.getItem('jwt');
@@ -15,18 +30,26 @@ const authLink = setContext((_, {headers}) => {
     headers: {
       ...headers,
       authorization: token ? `Bearer ${token}` : '',
-      'X-User-Id': userId || ''
+      'X-USER-Id': userId || ''
     },
   };
 });
 
-const apolloClient = new ApolloClient({
-  link: authLink.concat(httpLink),
-  cache: new InMemoryCache(),
-});
+const link = split(
+    ({query}) => {
+      const definition = getMainDefinition(query);
+      return (
+          definition.kind === 'OperationDefinition' &&
+          definition.operation === 'subscription'
+      );
+    },
+    wsLink,
+    authLink.concat(httpLink),
+);
 
-export const apolloProvider = createApolloProvider({
-  defaultClient: apolloClient,
+const apolloClient = new ApolloClient({
+  link: link,
+  cache: new InMemoryCache(),
 });
 
 export default apolloClient;

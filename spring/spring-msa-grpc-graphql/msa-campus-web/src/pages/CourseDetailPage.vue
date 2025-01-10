@@ -50,19 +50,19 @@
                 </v-col>
               </v-row>
 
-              <ChatComponent :course-id="courseId"></ChatComponent>
+              <ChatComponent :course-id="String(courseId)"></ChatComponent>
 
               <h3>Ratings</h3>
-              <!--              <v-list>-->
-              <!--                <v-list-item v-for="rating in course.ratings" :key="rating.id">-->
-              <!--                  <v-list-item-content>-->
-              <!--                    <v-list-item-title>{{ rating.user.name }}</v-list-item-title>-->
-              <!--                    <v-list-item-subtitle>-->
-              <!--                      Rating: {{ rating.rating }} - {{ rating.comment }}-->
-              <!--                    </v-list-item-subtitle>-->
-              <!--                  </v-list-item-content>-->
-              <!--                </v-list-item>-->
-              <!--              </v-list>-->
+              <v-list>
+                <v-list-item v-for="rating in course.ratings" :key="rating.id">
+                  <v-list-item-content>
+                    <v-list-item-title>{{ rating.user.name }}</v-list-item-title>
+                    <v-list-item-subtitle>
+                      Rating: {{ rating.rating }} - {{ rating.comment }}
+                    </v-list-item-subtitle>
+                  </v-list-item-content>
+                </v-list-item>
+              </v-list>
             </div>
           </v-card-text>
         </v-card>
@@ -77,7 +77,7 @@ import gql             from 'graphql-tag';
 import {computed, ref} from 'vue';
 import {useRoute}      from 'vue-router';
 import apolloClient    from '@/apollo';
-// import ChatComponent   from "@/components/ChatComponent.vue";
+import ChatComponent   from "@/components/ChatComponent.vue";
 
 const GET_COURSE_DETAILS = gql`
   query GetCourseDetails($userId: ID!, $courseId: ID!) {
@@ -99,9 +99,9 @@ const GET_COURSE_DETAILS = gql`
         id
         rating
         comment
-#        user {
-#          name
-#        }
+        user {
+          name
+        }
       }
     }
   }
@@ -115,7 +115,7 @@ const CHECK_COURSE_ACCESS = gql`
 
 export default {
   name: 'CourseDetailPage',
-  // components: {ChatComponent},
+  components: {ChatComponent},
   setup() {
     const route = useRoute();
     const userId = ref(localStorage.getItem('userId'));

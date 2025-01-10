@@ -5,7 +5,7 @@
         <v-card>
           <v-card-title>Chat</v-card-title>
           <v-card-text>
-            <div v-if="loading" class="text-center">Loading messages...</div>
+            <div v-if="queryLoading" class="text-center">Loading messages...</div>
             <div v-else class="scroll-view">
               <div v-for="message in messages" :key="message.messageId" class="message">
                 <strong>{{ message.userId }}:</strong> {{ message.content }}
@@ -102,7 +102,7 @@ export default {
     const sendMessage = () => {
       if (newMessage.value.trim()) {
         sendMessageMutation({
-          courseId: "100",//props.courseId,
+          courseId: props.courseId,//props.courseId,
           userId: userId.value,
           content: newMessage.value,
         });
