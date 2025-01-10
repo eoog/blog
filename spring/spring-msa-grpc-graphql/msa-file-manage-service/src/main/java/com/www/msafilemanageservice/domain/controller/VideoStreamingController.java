@@ -53,6 +53,7 @@ public class VideoStreamingController {
       try {
         Path filePath = Paths.get(file.getFilePath());
         Resource video = new UrlResource(filePath.toUri());
+        System.out.println("video = " + video);
         if (video.exists() || video.isReadable()) {
           FileChannel fileChannel = FileChannel.open(filePath, StandardOpenOption.READ);
           long fileLength = fileChannel.size();
@@ -75,11 +76,6 @@ public class VideoStreamingController {
           HttpHeaders headers = new HttpHeaders();
           headers.add(HttpHeaders.CONTENT_TYPE, "videos/mp4");
           if (rangeHeader != null) {
-            headers.add("Access-Control-Allow-Origin", "*");
-            headers.add("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
-            headers.add("Access-Control-Allow-Headers", "Content-Type");
-            headers.add("Access-Control-Expose-Headers",
-                "Content-Range, Accept-Ranges, Content-Length");
             headers.add(HttpHeaders.CONTENT_RANGE, "bytes " + start + "-" + end + "/" + fileLength);
             headers.add(HttpHeaders.ACCEPT_RANGES, "bytes");
             headers.add(HttpHeaders.CONTENT_LENGTH, String.valueOf(end - start + 1));
