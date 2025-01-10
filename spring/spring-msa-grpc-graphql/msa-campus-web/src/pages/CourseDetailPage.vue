@@ -53,16 +53,16 @@
               <ChatComponent :course-id="courseId"></ChatComponent>
 
               <h3>Ratings</h3>
-              <v-list>
-                <v-list-item v-for="rating in course.ratings" :key="rating.id">
-                  <v-list-item-content>
-                    <v-list-item-title>{{ rating.user.name }}</v-list-item-title>
-                    <v-list-item-subtitle>
-                      Rating: {{ rating.rating }} - {{ rating.comment }}
-                    </v-list-item-subtitle>
-                  </v-list-item-content>
-                </v-list-item>
-              </v-list>
+              <!--              <v-list>-->
+              <!--                <v-list-item v-for="rating in course.ratings" :key="rating.id">-->
+              <!--                  <v-list-item-content>-->
+              <!--                    <v-list-item-title>{{ rating.user.name }}</v-list-item-title>-->
+              <!--                    <v-list-item-subtitle>-->
+              <!--                      Rating: {{ rating.rating }} - {{ rating.comment }}-->
+              <!--                    </v-list-item-subtitle>-->
+              <!--                  </v-list-item-content>-->
+              <!--                </v-list-item>-->
+              <!--              </v-list>-->
             </div>
           </v-card-text>
         </v-card>
@@ -99,9 +99,9 @@ const GET_COURSE_DETAILS = gql`
         id
         rating
         comment
-        user {
-          name
-        }
+#        user {
+#          name
+#        }
       }
     }
   }

@@ -4,7 +4,7 @@ Content-Type: application/json
 
 {
   "name": "Fast Campus",
-  "email": "fast.campus1@example.com",
+  "email": "fast.campus@example.com",
   "password": "campus"
 }
 
@@ -18,14 +18,18 @@ Content-Type: application/json
   "password": "campus"
 }
 
-> {% client.global.set("userId", response.body.id); %}
+> {%
+  client.global.set("userId", response.body.id);
+%}
 
 ### Get User by ID
 GET http://localhost:8004/users/{{userId}}
 
-> {% client.test("Request executed successfully", function() {
+> {%
+  client.test("Request executed successfully", function () {
     client.assert(response.status === 200, "Response status is not 200");
-}); %}
+  });
+%}
 
 ### Update User
 PUT http://localhost:8004/users/{{userId}}
