@@ -26,7 +26,7 @@ public class KafkaConfig {
 
   @Bean
   @Primary // default 실행
-  @ConfigurationProperties("spring.kafka.json")
+  @ConfigurationProperties("spring.kafka")
   public KafkaProperties kafkaProperties() {
     return new KafkaProperties();
   }
@@ -53,7 +53,7 @@ public class KafkaConfig {
     ConcurrentKafkaListenerContainerFactory<String, Object> factory = new ConcurrentKafkaListenerContainerFactory<>();
     factory.setConsumerFactory(consumerFactory);
     factory.getContainerProperties().setAckMode(AckMode.MANUAL); // 수동커밋
-    factory.setConcurrency(1);
+//    factory.setConcurrency(1); // 컨슈머 1개
 
     return factory;
   }

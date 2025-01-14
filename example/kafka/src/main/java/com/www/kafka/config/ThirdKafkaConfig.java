@@ -14,6 +14,7 @@ import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 import org.springframework.kafka.listener.ContainerProperties;
+import org.springframework.kafka.listener.ContainerProperties.AckMode;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
 
 @Configuration
@@ -29,6 +30,7 @@ public class ThirdKafkaConfig {
     props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "latest");
     props.put(ConsumerConfig.ALLOW_AUTO_CREATE_TOPICS_CONFIG, "false");
     props.put(ConsumerConfig.MAX_POLL_RECORDS_CONFIG, ConsumerConfig.DEFAULT_MAX_POLL_RECORDS);
+    props.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG , "false");
     return new DefaultKafkaConsumerFactory<>(
         props,
         new StringDeserializer(),
@@ -44,8 +46,7 @@ public class ThirdKafkaConfig {
     ConcurrentKafkaListenerContainerFactory<String, MyMessage> factory = new ConcurrentKafkaListenerContainerFactory<>();
     factory.setConsumerFactory(batchConsumerFactory);
     factory.setBatchListener(true);
-    factory.setConcurrency(1);
-    factory.getContainerProperties().setAckMode(ContainerProperties.AckMode.BATCH);
+    factory.getContainerProperties().setAckMode(AckMode.MANUAL);
 
     return factory;
   }

@@ -1,5 +1,6 @@
 package com.www.kafka.consumer;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.www.kafka.model.MyMessage;
 import java.util.HashMap;
@@ -22,11 +23,14 @@ public class MyConsumer  {
 
   @KafkaListener(
       topics = {"my-json-topic"},
-      groupId = "test-consumer-group"
+      groupId = "test-consumer-group",
+      concurrency = "1"
   )
-  public void accept(ConsumerRecord<String, MyMessage> message , Acknowledgment ack) {
-    System.out.println("[Main Consumer] Message arrived! - " + message.value());
-    this.printPayloadIfFirstMessage(message.value());
+  public void accept(ConsumerRecord<String, String> message , Acknowledgment ack)
+      throws JsonProcessingException, InterruptedException {
+    MyMessage myMessage = objectMapper.readValue(message.value(), MyMessage.class);
+    this.printPayloadIfFirstMessage(myMessage);
+    Thread.sleep(1000);
     ack.acknowledge(); // 수동커밋
   }
 
