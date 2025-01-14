@@ -16,6 +16,8 @@ import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
+import org.springframework.kafka.listener.ContainerProperties;
+import org.springframework.kafka.listener.ContainerProperties.AckMode;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
 
 @Configuration
@@ -39,6 +41,7 @@ public class KafkaConfig {
     props.put(JsonDeserializer.TRUSTED_PACKAGES, "*");
     props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "latest");
     props.put(ConsumerConfig.ALLOW_AUTO_CREATE_TOPICS_CONFIG, "false");
+    props.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, "false"); // 수동커밋
     return new DefaultKafkaConsumerFactory<>(props);
   }
 
@@ -49,6 +52,7 @@ public class KafkaConfig {
   ) {
     ConcurrentKafkaListenerContainerFactory<String, Object> factory = new ConcurrentKafkaListenerContainerFactory<>();
     factory.setConsumerFactory(consumerFactory);
+    factory.getContainerProperties().setAckMode(AckMode.MANUAL); // 수동커밋
     factory.setConcurrency(1);
 
     return factory;

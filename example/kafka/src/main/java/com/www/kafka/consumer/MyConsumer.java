@@ -3,6 +3,7 @@ package com.www.kafka.consumer;
 import com.www.kafka.model.MyMessage;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.messaging.Message;
 import org.springframework.stereotype.Component;
 
@@ -15,7 +16,8 @@ public class MyConsumer  {
       topics = {"my-json-topic"},
       groupId = "test-consumer-group"
   )
-  public void accept(ConsumerRecord<String, MyMessage> message) {
+  public void accept(ConsumerRecord<String, MyMessage> message , Acknowledgment ack) {
     System.out.println("[Main Consumer] Message arrived! - " + message.value());
+    ack.acknowledge(); // 수동커밋
   }
 }
