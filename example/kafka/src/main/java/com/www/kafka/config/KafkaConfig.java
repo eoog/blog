@@ -23,7 +23,7 @@ import org.springframework.kafka.support.serializer.JsonDeserializer;
 public class KafkaConfig {
 
   @Bean
-  @Primary
+  @Primary // default 실행
   @ConfigurationProperties("spring.kafka.json")
   public KafkaProperties kafkaProperties() {
     return new KafkaProperties();
