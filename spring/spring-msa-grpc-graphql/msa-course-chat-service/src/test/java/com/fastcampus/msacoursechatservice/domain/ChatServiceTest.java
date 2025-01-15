@@ -1,6 +1,6 @@
-package com.fastcampus.nextcoursechatservice.domain;
+package com.fastcampus.msacoursechatservice.domain;
 
-import com.fastcampus.nextchatservice.domain.chat.Chat;
+import com.www.msacoursechatservice.domain.Chat;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.stub.StreamObserver;

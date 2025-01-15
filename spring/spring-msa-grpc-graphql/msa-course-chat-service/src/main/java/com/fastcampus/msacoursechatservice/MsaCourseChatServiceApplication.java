@@ -1,4 +1,4 @@
-package com.fastcampus.nextcoursechatservice;
+package com.fastcampus.msacoursechatservice;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

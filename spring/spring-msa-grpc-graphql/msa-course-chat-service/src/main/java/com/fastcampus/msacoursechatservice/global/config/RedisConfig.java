@@ -1,4 +1,4 @@
-package com.fastcampus.nextcoursechatservice.global.config;
+package com.fastcampus.msacoursechatservice.global.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
