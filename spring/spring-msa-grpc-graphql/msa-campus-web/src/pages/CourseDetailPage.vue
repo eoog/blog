@@ -7,14 +7,9 @@
           <v-card-subtitle>{{ course?.description }}</v-card-subtitle>
           <v-card-text>
             <v-alert v-if="loading" type="info">Loading...</v-alert>
-            <v-alert v-if="error" type="error">Error loading course details: {{
-                error.message
-              }}
-            </v-alert>
+            <v-alert v-if="error" type="error">Error loading course details: {{ error.message }}</v-alert>
             <div v-if="course">
-              <v-alert v-if="!hasAccess" type="warning">You do not have access to this course.
-                Please purchase to gain access.
-              </v-alert>
+              <v-alert v-if="!hasAccess" type="warning">You do not have access to this course. Please purchase to gain access.</v-alert>
 
               <v-row>
                 <v-col cols="12" md="4">
@@ -50,7 +45,7 @@
                 </v-col>
               </v-row>
 
-              <ChatComponent :course-id="String(courseId)"></ChatComponent>
+              <ChatComponent :course-id="courseId"></ChatComponent>
 
               <h3>Ratings</h3>
               <v-list>
@@ -72,12 +67,12 @@
 </template>
 
 <script>
-import {useQuery}      from '@vue/apollo-composable';
-import gql             from 'graphql-tag';
-import {computed, ref} from 'vue';
-import {useRoute}      from 'vue-router';
-import apolloClient    from '@/apollo';
-import ChatComponent   from "@/components/ChatComponent.vue";
+import { useQuery } from '@vue/apollo-composable';
+import gql from 'graphql-tag';
+import { ref, computed } from 'vue';
+import { useRoute } from 'vue-router';
+import apolloClient from '@/apollo';
+import ChatComponent from "@/components/ChatComponent.vue";
 
 const GET_COURSE_DETAILS = gql`
   query GetCourseDetails($userId: ID!, $courseId: ID!) {
@@ -123,9 +118,9 @@ export default {
     const hasAccess = ref(false);
     const selectedSession = ref(null);
 
-    const {result, loading, error} = useQuery(GET_COURSE_DETAILS, {
-      userId: userId.value,
-      courseId: courseId.value,
+    const { result, loading, error } = useQuery(GET_COURSE_DETAILS, {
+        userId: userId.value,
+        courseId: courseId.value,
     });
 
     const course = computed(() => result.value?.getCourse);
@@ -133,7 +128,7 @@ export default {
     // Check course access on component mount
     const checkAccess = async () => {
       try {
-        const {data} = await apolloClient.query({
+        const { data } = await apolloClient.query({
           query: CHECK_COURSE_ACCESS,
           variables: {
             userId: userId.value,

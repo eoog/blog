@@ -34,7 +34,7 @@
 
 <script>
 import {useQuery} from '@vue/apollo-composable';
-import gql        from 'graphql-tag';
+import gql from 'graphql-tag';
 
 const LIST_COURSES = gql`
   query ListCourses {

@@ -5,7 +5,7 @@
         <v-card>
           <v-card-title>Chat</v-card-title>
           <v-card-text>
-            <div v-if="queryLoading" class="text-center">Loading messages...</div>
+            <div v-if="loading" class="text-center">Loading messages...</div>
             <div v-else class="scroll-view">
               <div v-for="message in messages" :key="message.messageId" class="message">
                 <strong>{{ message.userId }}:</strong> {{ message.content }}
@@ -27,9 +27,9 @@
 </template>
 
 <script>
-import {useMutation, useQuery, useSubscription} from '@vue/apollo-composable';
-import {ref, toRaw, watch}                      from 'vue';
-import gql                                      from "graphql-tag";
+import {useSubscription, useMutation, useQuery} from '@vue/apollo-composable';
+import {ref, toRaw, watch} from 'vue';
+import gql from "graphql-tag";
 
 const GET_MESSAGES = gql`
   query GetMessages($courseId: String!) {
@@ -75,7 +75,7 @@ export default {
     const userId = ref(localStorage.getItem('userId'));
 
     // Query to get existing messages
-    const {result: queryResult, loading: queryLoading} = useQuery(GET_MESSAGES, {
+    const { result: queryResult, loading: queryLoading } = useQuery(GET_MESSAGES, {
       courseId: props.courseId,
     });
     //
@@ -86,7 +86,7 @@ export default {
     });
 
     // Subscription to receive new messages
-    const {result} = useSubscription(MESSAGE_RECEIVED, {
+    const { result } = useSubscription(MESSAGE_RECEIVED, {
       courseId: props.courseId,
     });
 
@@ -97,12 +97,12 @@ export default {
     });
 
     // Mutation to send a new message
-    const {mutate: sendMessageMutation} = useMutation(SEND_MESSAGE);
+    const { mutate: sendMessageMutation } = useMutation(SEND_MESSAGE);
 
     const sendMessage = () => {
       if (newMessage.value.trim()) {
         sendMessageMutation({
-          courseId: props.courseId,//props.courseId,
+          courseId: "100",//props.courseId,
           userId: userId.value,
           content: newMessage.value,
         });

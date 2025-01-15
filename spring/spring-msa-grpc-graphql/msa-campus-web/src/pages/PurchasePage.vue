@@ -13,8 +13,7 @@
               <h2>{{ course.title }}</h2>
               <p>{{ course.description }}</p>
               <v-form @submit.prevent="purchaseCourse">
-                <v-text-field v-model="paymentMethod" label="Payment Method (e.g., Credit Card)"
-                              required></v-text-field>
+                <v-text-field v-model="paymentMethod" label="Payment Method (e.g., Credit Card)" required></v-text-field>
                 <v-text-field v-model="amount" label="Amount" type="number" required></v-text-field>
                 <v-btn type="submit" color="primary">Purchase</v-btn>
               </v-form>
@@ -27,10 +26,10 @@
 </template>
 
 <script>
-import {useMutation, useQuery} from '@vue/apollo-composable';
-import gql                     from 'graphql-tag';
-import {computed, ref}         from 'vue';
-import {useRoute}              from 'vue-router';
+import { useQuery, useMutation } from '@vue/apollo-composable';
+import gql from 'graphql-tag';
+import { ref, computed } from 'vue';
+import { useRoute } from 'vue-router';
 
 const GET_COURSE = gql`
   query GetCourse($userId: ID!, $courseId: ID!) {
@@ -69,7 +68,7 @@ export default {
 
     const course = computed(() => result.value?.getCourse);
 
-    const {mutate: purchaseCourseMutation} = useMutation(PURCHASE_COURSE);
+    const { mutate: purchaseCourseMutation } = useMutation(PURCHASE_COURSE);
 
     const purchaseCourse = async () => {
       try {

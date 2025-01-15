@@ -7,8 +7,7 @@
           <v-card-text>
             <v-form @submit.prevent="login">
               <v-text-field v-model="email" label="Email" type="email" required></v-text-field>
-              <v-text-field v-model="password" label="Password" type="password"
-                            required></v-text-field>
+              <v-text-field v-model="password" label="Password" type="password" required></v-text-field>
               <v-btn type="submit" color="primary">Login</v-btn>
             </v-form>
           </v-card-text>
@@ -19,9 +18,9 @@
 </template>
 
 <script>
-import axios       from 'axios';
-import {ref}       from 'vue';
-import {useRouter} from 'vue-router';
+import axios from 'axios';
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 
 export default {
   name: 'LoginPage',

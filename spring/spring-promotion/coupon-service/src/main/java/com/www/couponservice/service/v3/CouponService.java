@@ -117,7 +117,6 @@ public class CouponService {
 
     coupon.use(orderId);
     couponStateService.updateCouponState(coupon);
-
     return coupon;
   }
 

@@ -2,12 +2,8 @@
   <v-container>
     <h1>Purchase History</h1>
     <v-alert v-if="loadingEnrollments || loadingSubscriptions" type="info">Loading...</v-alert>
-    <v-alert v-if="errorEnrollments" type="error">Error loading enrollments:
-      {{ errorEnrollments.message }}
-    </v-alert>
-    <v-alert v-if="errorSubscriptions" type="error">Error loading subscriptions:
-      {{ errorSubscriptions.message }}
-    </v-alert>
+    <v-alert v-if="errorEnrollments" type="error">Error loading enrollments: {{ errorEnrollments.message }}</v-alert>
+    <v-alert v-if="errorSubscriptions" type="error">Error loading subscriptions: {{ errorSubscriptions.message }}</v-alert>
 
     <h2>Enrollments</h2>
     <v-list v-if="enrollments">
@@ -35,8 +31,8 @@
 </template>
 
 <script>
-import {useQuery}         from '@vue/apollo-composable';
-import gql                from 'graphql-tag';
+import { useQuery } from '@vue/apollo-composable';
+import gql from 'graphql-tag';
 import {ref, watchEffect} from 'vue';
 
 const GET_USER_ENROLLMENTS = gql`
@@ -73,19 +69,11 @@ export default {
   setup() {
     const userId = ref(localStorage.getItem('userId'));
 
-    const {
-      result: enrollmentsResult,
-      loading: loadingEnrollments,
-      error: errorEnrollments
-    } = useQuery(GET_USER_ENROLLMENTS, {
+    const { result: enrollmentsResult, loading: loadingEnrollments, error: errorEnrollments } = useQuery(GET_USER_ENROLLMENTS, {
       userId: userId.value
     });
 
-    const {
-      result: subscriptionsResult,
-      loading: loadingSubscriptions,
-      error: errorSubscriptions
-    } = useQuery(GET_USER_PLAN_SUBSCRIPTIONS, {
+    const { result: subscriptionsResult, loading: loadingSubscriptions, error: errorSubscriptions } = useQuery(GET_USER_PLAN_SUBSCRIPTIONS, {
       userId: userId.value
     });
 
