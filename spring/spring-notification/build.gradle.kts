@@ -37,9 +37,16 @@ subprojects {
     }
 
     dependencies {
+        // lombok
+        compileOnly("org.projectlombok:lombok:1.18.30")
+        annotationProcessor("org.projectlombok:lombok:1.18.30")
+
         // junit 기본 의존성
         testImplementation(platform("org.junit:junit-bom:5.10.0"))
         testImplementation("org.junit.jupiter:junit-jupiter")
+
+        // Spring boot 테스트 어노테이션
+        testImplementation("org.springframework.boot:spring-boot-starter-test")
     }
 
     tasks.test {
