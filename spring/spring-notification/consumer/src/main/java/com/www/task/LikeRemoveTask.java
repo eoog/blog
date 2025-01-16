@@ -1,14 +1,14 @@
 package com.www.task;
 
 
-import static com.www.com.www.domain.NotificationType.LIKE;
+import static com.www.domain.NotificationType.LIKE;
 
-import com.www.com.www.domain.LikeNotification;
-import com.www.com.www.domain.Notification;
-import com.www.com.www.service.NotificationGetService;
-import com.www.com.www.service.NotificationRemoveService;
-import com.www.com.www.service.NotificationSaveService;
+import com.www.domain.LikeNotification;
+import com.www.domain.Notification;
 import com.www.event.LikeEvent;
+import com.www.service.NotificationGetService;
+import com.www.service.NotificationRemoveService;
+import com.www.service.NotificationSaveService;
 import java.time.Instant;
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;

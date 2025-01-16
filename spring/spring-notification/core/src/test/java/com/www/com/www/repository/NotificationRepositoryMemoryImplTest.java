@@ -62,7 +62,7 @@ class NotificationRepositoryMemoryImplTest {
     assertEquals(notification.getUserId(), userId);
     assertEquals(notification.getOccurredAt().getEpochSecond(), now.getEpochSecond());
     assertEquals(notification.getCreatedAt().getEpochSecond(), now.getEpochSecond());
-    assertEquals(notification.getLastUpdateAt().getEpochSecond(), now.getEpochSecond());
+    assertEquals(notification.getLastUpdatedAt().getEpochSecond(), now.getEpochSecond());
     assertEquals(notification.getDeletedAt().getEpochSecond(), ninetyDaysAfter.getEpochSecond());
     assertEquals(notification.getPostId(), postId);
     assertEquals(notification.getWriterId(), writerId);

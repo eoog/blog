@@ -1,12 +1,12 @@
 package com.www.task;
 
 
-import static com.www.com.www.domain.NotificationType.FOLLOW;
+import static com.www.domain.NotificationType.FOLLOW;
 
-import com.www.com.www.domain.FollowNotification;
-import com.www.com.www.service.NotificationSaveService;
-import com.www.com.www.utils.NotificationIdGenerator;
+import com.www.domain.FollowNotification;
 import com.www.event.FollowEvent;
+import com.www.service.NotificationSaveService;
+import com.www.utils.NotificationIdGenerator;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import lombok.extern.slf4j.Slf4j;

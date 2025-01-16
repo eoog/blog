@@ -1,16 +1,16 @@
 package com.www.task;
 
 
-import static com.www.com.www.domain.NotificationType.LIKE;
+import static com.www.domain.NotificationType.LIKE;
 
-import com.www.com.www.client.PostClient;
-import com.www.com.www.domain.LikeNotification;
-import com.www.com.www.domain.Notification;
-import com.www.com.www.domain.Post;
-import com.www.com.www.service.NotificationGetService;
-import com.www.com.www.service.NotificationSaveService;
-import com.www.com.www.utils.NotificationIdGenerator;
+import com.www.client.PostClient;
+import com.www.domain.LikeNotification;
+import com.www.domain.Notification;
+import com.www.domain.Post;
 import com.www.event.LikeEvent;
+import com.www.service.NotificationGetService;
+import com.www.service.NotificationSaveService;
+import com.www.utils.NotificationIdGenerator;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.List;

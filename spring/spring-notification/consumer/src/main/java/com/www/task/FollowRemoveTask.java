@@ -1,10 +1,10 @@
 package com.www.task;
 
 
-import com.www.com.www.domain.NotificationType;
-import com.www.com.www.service.NotificationGetService;
-import com.www.com.www.service.NotificationRemoveService;
+import com.www.domain.NotificationType;
 import com.www.event.FollowEvent;
+import com.www.service.NotificationGetService;
+import com.www.service.NotificationRemoveService;
 import org.springframework.stereotype.Component;
 
 @Component

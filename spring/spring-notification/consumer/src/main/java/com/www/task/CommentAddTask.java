@@ -1,15 +1,15 @@
 package com.www.task;
 
-import com.www.com.www.client.CommentClient;
-import com.www.com.www.client.PostClient;
-import com.www.com.www.domain.Comment;
-import com.www.com.www.domain.CommentNotification;
-import com.www.com.www.domain.Notification;
-import com.www.com.www.domain.NotificationType;
-import com.www.com.www.domain.Post;
-import com.www.com.www.service.NotificationSaveService;
-import com.www.com.www.utils.NotificationIdGenerator;
+import com.www.client.CommentClient;
+import com.www.client.PostClient;
+import com.www.domain.Comment;
+import com.www.domain.CommentNotification;
+import com.www.domain.Notification;
+import com.www.domain.NotificationType;
+import com.www.domain.Post;
 import com.www.event.CommentEvent;
+import com.www.service.NotificationSaveService;
+import com.www.utils.NotificationIdGenerator;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Objects;

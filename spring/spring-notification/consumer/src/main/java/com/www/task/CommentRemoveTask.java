@@ -1,13 +1,13 @@
 package com.www.task;
 
 
-import static com.www.com.www.domain.NotificationType.COMMENT;
+import static com.www.domain.NotificationType.COMMENT;
 
-import com.www.com.www.client.PostClient;
-import com.www.com.www.domain.Post;
-import com.www.com.www.service.NotificationGetService;
-import com.www.com.www.service.NotificationRemoveService;
+import com.www.client.PostClient;
+import com.www.domain.Post;
 import com.www.event.CommentEvent;
+import com.www.service.NotificationGetService;
+import com.www.service.NotificationRemoveService;
 import java.util.Objects;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
