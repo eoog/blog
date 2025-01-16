@@ -1,0 +1,23 @@
+spring:
+  cloud:
+    function:
+      definition: like; comment; follow; # Consumer 함수 이름
+    stream:
+      binder:
+        brokers: localhost:9092
+      bindings:
+        comment-in-0: # 채널 이름 (기본 규칙: 함수이름-in-0)
+          destination: comment  # Topic 이름
+          content-type: application/json
+          group: notification-consumer
+          consumer.max-attempts: 2
+        like-in-0:
+          destination: like
+          content-type: application/json
+          group: notification-consumer
+          consumer.max-attempts: 2
+        follow-in-0:
+          destination: follow
+          content-type: application/json
+          group: notification-consumer
+          consumer.max-attempts: 2
