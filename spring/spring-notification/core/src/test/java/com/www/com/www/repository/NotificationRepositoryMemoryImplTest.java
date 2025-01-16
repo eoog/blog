@@ -1,10 +1,15 @@
 package com.www.com.www.repository;
 
+import static com.www.com.www.domain.NotificationType.COMMENT;
+import static java.time.temporal.ChronoUnit.DAYS;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import com.www.com.www.domain.CommentNotification;
 import com.www.com.www.domain.Notification;
-import com.www.com.www.domain.NotificationType;
 import java.time.Instant;
 import java.util.Optional;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,50 +21,63 @@ import org.springframework.boot.test.context.SpringBootTest;
 class NotificationRepositoryMemoryImplTest {
 
   @Autowired
-  private NotificationRepository memory;
+  private NotificationRepository sut;
 
   private final Instant now = Instant.now();
+
+
+  private final long userId = 2L;
+  private final long postId = 3L;
+  private final long writerId = 4L;
+  private final long commentId = 5L;
+  private final String comment = "comment";
+  private final Instant ninetyDaysAfter = Instant.now().plus(90, DAYS);
+
+  private CommentNotification createCommentNotification(String id) {
+    return new CommentNotification(id, userId, COMMENT, now, now, now, ninetyDaysAfter, postId,
+        writerId, comment,
+        commentId);
+  }
 
   @Test()
   @DisplayName("Map 기반으로 저장")
   void memory_save() {
-    // given
-    Notification notification = new Notification(1L, 1L, NotificationType.LIKE, now,
-        now, now, now);
+    String id = "1";
+    sut.save(createCommentNotification(id));
+    Optional<Notification> optionalNotification = sut.findById(id);
 
-    memory.save(notification);
-
-    //when
-    Optional<Notification> result = memory.findById(1L);
-
-    System.out.println("result = " + result.get().toString());
-    //then
-    Assertions.assertEquals(result.get().id, 1L);
+    assertTrue(optionalNotification.isPresent());
   }
 
   @Test
   @DisplayName("아이디 찾기")
   void memory_findById() {
-    //given
-    Notification notification = new Notification(2L, 2L, NotificationType.LIKE, now,
-        now, now, now);
-    memory.save(notification);
-    //when
-    Optional<Notification> result = memory.findById(2L);
-    //then
-    Assertions.assertEquals(result.get().id, 2L);
+    String id = "2";
+
+    sut.save(createCommentNotification(id));
+    Optional<Notification> optionalNotification = sut.findById(id);
+
+    CommentNotification notification = (CommentNotification) optionalNotification.orElseThrow();
+    assertEquals(notification.getId(), id);
+    assertEquals(notification.getUserId(), userId);
+    assertEquals(notification.getOccurredAt().getEpochSecond(), now.getEpochSecond());
+    assertEquals(notification.getCreatedAt().getEpochSecond(), now.getEpochSecond());
+    assertEquals(notification.getLastUpdateAt().getEpochSecond(), now.getEpochSecond());
+    assertEquals(notification.getDeletedAt().getEpochSecond(), ninetyDaysAfter.getEpochSecond());
+    assertEquals(notification.getPostId(), postId);
+    assertEquals(notification.getWriterId(), writerId);
+    assertEquals(notification.getComment(), comment);
+    assertEquals(notification.getCommentId(), commentId);
   }
 
   @Test
-  @DisplayName("아이디 삭제하기")
-  void memory_delete() {
-    // given
-    //Notification notification = new Notification(3L, 3L, NotificationType.LIKE, now, now, now, now);
-    //memory.save(notification);
-    memory.deleteById(2L);
-    // when
-    Optional<Notification> result = memory.findById(2L);
-    // then
-    Assertions.assertFalse(result.isPresent());
+  void testDeleteById() {
+    String id = "3";
+
+    sut.save(createCommentNotification(id));
+    sut.deleteById(id);
+    Optional<Notification> optionalNotification = sut.findById(id);
+
+    assertFalse(optionalNotification.isPresent());
   }
 }

@@ -1,12 +1,22 @@
 package com.www.com.www.domain;
 
 import java.time.Instant;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
+import org.springframework.data.mongodb.core.mapping.FieldType;
 
-
-public class Notification {
+@Setter
+@Getter
+@AllArgsConstructor
+@Document("notifications") // 몽고DB 어떤 컬렉션
+public abstract class Notification {
 
   // 알림 아이디
-  public Long id;
+  @Field(targetType = FieldType.STRING)
+  public String id;
   // 유저 아이디
   public Long userId;
   // 알림 종류
@@ -16,31 +26,9 @@ public class Notification {
   // 알림 생성 날짜
   public Instant createdAt;
   // 알림 업데이트 날짜
-  public Instant lastUpdateAt;
+  public Instant lastUpdatedAt;
   // 알림 삭제 날자
   public Instant deletedAt;
 
-  public Notification(Long id, Long userId, NotificationType type, Instant occurredAt,
-      Instant createdAt, Instant lastUpdateAt, Instant deletedAt) {
-    this.id = id;
-    this.userId = userId;
-    this.type = type;
-    this.occurredAt = occurredAt;
-    this.createdAt = createdAt;
-    this.lastUpdateAt = lastUpdateAt;
-    this.deletedAt = deletedAt;
-  }
 
-  @Override
-  public String toString() {
-    return "Notification{" +
-        "id=" + id +
-        ", userId=" + userId +
-        ", type=" + type +
-        ", occurredAt=" + occurredAt +
-        ", createdAt=" + createdAt +
-        ", lastUpdateAt=" + lastUpdateAt +
-        ", deletedAt=" + deletedAt +
-        '}';
-  }
 }

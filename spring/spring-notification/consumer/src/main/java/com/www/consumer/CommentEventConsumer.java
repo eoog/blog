@@ -1,6 +1,11 @@
 package com.www.consumer;
 
+import static com.www.event.CommentEventType.ADD;
+import static com.www.event.CommentEventType.REMOVE;
+
 import com.www.event.CommentEvent;
+import com.www.task.CommentAddTask;
+import com.www.task.CommentRemoveTask;
 import java.util.function.Consumer;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
@@ -10,8 +15,23 @@ import org.springframework.stereotype.Component;
 @Component
 public class CommentEventConsumer {
 
-  @Bean("comment") //  definition: like; comment; follow; # Consumer 함수 이름
+  private final CommentAddTask commentAddTask;
+
+  private final CommentRemoveTask commentRemoveTask;
+
+  public CommentEventConsumer(CommentAddTask commentAddTask, CommentRemoveTask commentRemoveTask) {
+    this.commentAddTask = commentAddTask;
+    this.commentRemoveTask = commentRemoveTask;
+  }
+
+  @Bean("comment")
   public Consumer<CommentEvent> comment() {
-    return evnet -> log.info(evnet.toString());
+    return event -> {
+      if (event.getType() == ADD) {
+        commentAddTask.processEvent(event);
+      } else if (event.getType() == REMOVE) {
+        commentRemoveTask.processEvent(event);
+      }
+    };
   }
 }
