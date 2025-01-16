@@ -8,7 +8,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
+import org.springframework.stereotype.Component;
 
+@Component
 public interface NotificationRepository extends MongoRepository<Notification, String> {
 
   Optional<Notification> findById(String id);
