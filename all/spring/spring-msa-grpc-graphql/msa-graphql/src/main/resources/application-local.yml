@@ -1,0 +1,77 @@
+spring:
+  application:
+    name: msa-graphql
+
+  graphql:
+    path: /graphql
+    graphiql:
+      enabled: true
+      path: /graphiql
+    schema:
+      inspection:
+        enabled: true # 구현이 덜되어있으면 예외
+    websocket:
+      path: /graphiql
+      keep-alive: 60
+
+  data:
+    redis:
+      host: 127.0.0.1
+      port: 6380
+      client-type: lettuce
+
+grpc:
+  client:
+    msa-playback-service:
+      address: 'discovery:///msa-playback-service'
+      enableKeepAlive: true
+      keepAliveWithoutCalls: true
+      negotiationType: plaintext
+    msa-payment-service:
+      address: 'discovery:///msa-enrollment-service'
+      enableKeepAlive: true
+      keepAliveWithoutCalls: true
+      negotiationType: plaintext
+    msa-enrollment-service:
+      address: 'discovery:///msa-enrollment-service'
+      enableKeepAlive: true
+      keepAliveWithoutCalls: true
+      negotiationType: plaintext
+    msa-chat-service:
+      address: 'discovery:///msa-course-chat-service'
+      enableKeepAlive: true
+      keepAliveWithoutCalls: true
+      negotiationType: plaintext
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8000/eureka/
+    register-with-eureka: true
+    fetch-registry: true
+
+management:
+  tracing:
+    sampling:
+      probability: 1.0
+    propagation:
+      consume: b3
+      produce: b3_multi
+  zipkin:
+    tracing:
+      endpoint: "http://localhost:9411/api/v2/spans"
+
+  endpoints:
+    web:
+      exposure:
+        include:
+          - info
+          - health
+          - loggers
+          - mappings
+          - metrics
+          - shutdown
+          - prometheus
+logging:
+  pattern:
+    level: "%5p [%X{traceId:-},%X{spanId:-}]"
