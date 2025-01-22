@@ -1,17 +1,23 @@
-<div align="center">
+[//]: # (<div align="center">)
 
-<!-- logo -->
-<img src="https://user-images.githubusercontent.com/80824750/208554611-f8277015-12e8-48d2-b2cc-d09d67f03c02.png" width="400"/>
+[//]: # ()
+[//]: # (<!-- logo -->)
 
-### Back-end Git Reamd.me Template ✅
+[//]: # (<img src="https://user-images.githubusercontent.com/80824750/208554611-f8277015-12e8-48d2-b2cc-d09d67f03c02.png" width="400"/>)
 
-[<img src="https://img.shields.io/badge/-readme.md-important?style=flat&logo=google-chrome&logoColor=white" />]() [<img src="https://img.shields.io/badge/-tech blog-blue?style=flat&logo=google-chrome&logoColor=white" />]() [<img src="https://img.shields.io/badge/release-v0.0.0-yellow?style=flat&logo=google-chrome&logoColor=white" />]()
-<br/> [<img src="https://img.shields.io/badge/프로젝트 기간-2022.12.10~2022.12.19-green?style=flat&logo=&logoColor=white" />]()
+[//]: # ()
+[//]: # (### Back-end Git Reamd.me Template ✅)
 
-</div> 
+[//]: # ()
+[//]: # ([<img src="https://img.shields.io/badge/-readme.md-important?style=flat&logo=google-chrome&logoColor=white" />]&#40;&#41; [<img src="https://img.shields.io/badge/-tech blog-blue?style=flat&logo=google-chrome&logoColor=white" />]&#40;&#41; [<img src="https://img.shields.io/badge/release-v0.0.0-yellow?style=flat&logo=google-chrome&logoColor=white" />]&#40;&#41;)
+
+[//]: # (<br/> [<img src="https://img.shields.io/badge/프로젝트 기간-2022.12.10~2022.12.19-green?style=flat&logo=&logoColor=white" />]&#40;&#41;)
+
+[//]: # ()
+[//]: # (</div> )
 
 ## 📝 소개
-백엔드 깃 레파지토리의 README.md를 빠르게 작성하기 위해 만든 템플릿입니다.
+백엔드 강의 듣고 작성한 프로젝트 입니다.
 
 다음과 같은 내용을 작성할 수 있습니다.
 - 프로젝트 소개
@@ -77,16 +83,25 @@
 
 
 
-<br />
+[//]: # (<br />)
 
-## 🤔 기술적 이슈와 해결 과정
-- Stream 써야할까?
-    - [Stream API에 대하여](https://velog.io/@yewo2nn16/Java-Stream-API)
-- Gmail STMP 이용하여 이메일 전송하기
-    - [gmail 보내기](https://velog.io/@yewo2nn16/Email-이메일-전송하기with-첨부파일)
-- AWS EC2에 배포하기
-    - [서버 배포하기-1](https://velog.io/@yewo2nn16/SpringBoot-서버-배포)
-    - [서버 배포하기-2](https://velog.io/@yewo2nn16/SpringBoot-서버-배포-인텔리제이에서-jar-파일-빌드해서-배포하기)
+[//]: # ()
+[//]: # (## 🤔 기술적 이슈와 해결 과정)
 
+[//]: # (- Stream 써야할까?)
 
-<br />
+[//]: # (    - [Stream API에 대하여]&#40;https://velog.io/@yewo2nn16/Java-Stream-API&#41;)
+
+[//]: # (- Gmail STMP 이용하여 이메일 전송하기)
+
+[//]: # (    - [gmail 보내기]&#40;https://velog.io/@yewo2nn16/Email-이메일-전송하기with-첨부파일&#41;)
+
+[//]: # (- AWS EC2에 배포하기)
+
+[//]: # (    - [서버 배포하기-1]&#40;https://velog.io/@yewo2nn16/SpringBoot-서버-배포&#41;)
+
+[//]: # (    - [서버 배포하기-2]&#40;https://velog.io/@yewo2nn16/SpringBoot-서버-배포-인텔리제이에서-jar-파일-빌드해서-배포하기&#41;)
+
+[//]: # ()
+[//]: # ()
+[//]: # (<br />)
