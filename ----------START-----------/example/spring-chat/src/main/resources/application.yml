@@ -1,0 +1,51 @@
+
+server:
+  servlet:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true # 인코딩 할때!! UTF-8 변환
+
+
+spring:
+  application:
+    name: spring-chat
+
+#db
+  datasource:
+    url: jdbc:mysql://localhost:3306/campus?serverTimezone=Asia/Seoul&useSSL=false&allowPublicKeyRetrieval=true
+    username: root
+    password: 1234
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+
+# oauth
+  security:
+    oauth2:
+      client:
+        registration:
+          kakao:
+            client-id: 76e999e50c43342500824a9a4c59d6e3
+            client-secret: Vb4WqP0vhzFKZEZ9pDv55Ly4rBowCS4X
+            scope:
+              - profile_nickname
+              - account_email
+              - name
+              - gender
+              - birthday
+              - birthyear
+              - phone_number
+            redirect-uri: "http://localhost:8080/login/oauth2/code/kakao"
+            client-name: kakao
+            authorization-grant-type: authorization_code
+            client-authentication-method: client_secret_post
+        provider:
+          kakao:
+            authorization-uri: https://kauth.kakao.com/oauth/authorize
+            token-uri: https://kauth.kakao.com/oauth/token
+            user-info-uri: https://kapi.kakao.com/v2/user/me
+            user-name-attribute: id

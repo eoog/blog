@@ -1,0 +1,44 @@
+plugins {
+    id 'java'
+}
+
+group = 'com.www'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation platform('org.junit:junit-bom:5.10.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+
+    // Flink 기본 의존성
+    implementation 'org.apache.flink:flink-streaming-java_2.12:1.14.0'
+    implementation 'org.apache.flink:flink-clients_2.12:1.14.0'
+
+    // Flink Kafka Connector
+    implementation 'org.apache.flink:flink-connector-kafka_2.12:1.14.0'
+
+    // Jackson (JSON 파싱을 위한 라이브러리)
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.5'
+    implementation 'com.fasterxml.jackson.core:jackson-core:2.12.5'
+    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.12.5'
+
+    // SLF4J 및 Log4j (로그 관리)
+    implementation 'org.slf4j:slf4j-api:1.7.32'
+    implementation 'org.slf4j:slf4j-log4j12:1.7.32'
+
+    // Lombok (코드 간소화를 위한 라이브러리)
+    compileOnly 'org.projectlombok:lombok:1.18.22'
+    annotationProcessor 'org.projectlombok:lombok:1.18.22'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+tasks.withType(JavaExec) {
+    jvmArgs += '--add-opens=java.base/java.util=ALL-UNNAMED'
+    jvmArgs += '--add-opens=java.base/java.lang=ALL-UNNAMED'
+}
