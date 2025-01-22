@@ -5,4 +5,7 @@ dependencies {
     runtimeOnly(project(":netplix-core:core-service"))
 
     implementation(project(":netplix-core:core-usecase"))
+    implementation(project(":netplix-commons"))
+
+
 }

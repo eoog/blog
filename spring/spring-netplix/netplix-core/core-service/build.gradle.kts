@@ -6,5 +6,6 @@ dependencies {
 
     implementation(project(":netplix-core:core-usecase"))
     implementation(project(":netplix-core:core-port"))
+    implementation(project(":netplix-core:core-domain"))
 
 }
