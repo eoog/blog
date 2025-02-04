@@ -1,5 +1,6 @@
 package com.www.couponservice.service.v2;
 
+import com.www.couponservice.aop.CouponMetered;
 import com.www.couponservice.domain.Coupon;
 import com.www.couponservice.dto.v2.CouponDto;
 import com.www.couponservice.exception.CouponNotFoundException;
@@ -21,6 +22,7 @@ public class CouponService {
    * 2025.01.03 쿠폰 발급
    */
   @Transactional
+  @CouponMetered(version = "v2")
   public CouponDto.CouponResponse issueCoupon(CouponDto.CouponIssueRequest request) {
     Coupon coupon = couponRedisService.issueCoupon(request);
     couponStateService.updateCouponState(couponRepository.findById(coupon.getId())
