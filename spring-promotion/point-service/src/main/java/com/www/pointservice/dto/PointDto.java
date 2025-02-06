@@ -91,4 +91,6 @@ public class PointDto {
     @NotBlank(message = "내용이 없습니다")
     private String description;
   }
+
+
 }

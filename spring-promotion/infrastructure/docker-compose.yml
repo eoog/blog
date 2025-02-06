@@ -8,8 +8,8 @@ services:
     volumes:
       - ./redis-config:/usr/local/etc/redis
     command: redis-server /usr/local/etc/redis/redis.conf
-    networks:
-      - promotion_network
+#    networks:
+#      - promotion_network
   kafka:
     image: confluentinc/cp-kafka:7.5.1 # Apache Kafka 3.5.x = Confluent Platform 7.5.x
     container_name: kafka
