@@ -68,10 +68,13 @@ public class PointRedisService {
       // 포인트 잔액 조회
       // 포인트가 없으면 0 원
       PointBalance pointBalance = pointBalanceRepository.findByUserId(userId)
-          .orElseGet(() -> PointBalance.builder()
-              .userId(userId)
-              .balance(0L)
-              .build());
+          .orElseGet(() -> {
+            PointBalance pointBalance1 = PointBalance.builder()
+                .userId(userId)
+                .balance(0L)
+                .build();
+            return pointBalanceRepository.save(pointBalance1);
+          });
 
       // 포인트 충전
       pointBalance.addBalance(amount);
