@@ -1,5 +1,6 @@
 package com.www.pointservice.service.v1;
 
+import com.www.pointservice.aop.PointMetered;
 import com.www.pointservice.domain.Point;
 import com.www.pointservice.domain.PointBalance;
 import com.www.pointservice.domain.PointType;
@@ -22,6 +23,7 @@ public class PointService {
   // orElse => null 이면 호출을 안함
   // 쓰기락 Lock 이 걸려있음
   @Transactional(isolation = Isolation.REPEATABLE_READ) //
+  @PointMetered(version = "v1")
   public Point earnPoints(Long userId, Long amount, String description) {
 
     // 포인트 잔액 조회
@@ -53,6 +55,7 @@ public class PointService {
 
   // 포인트 사용
   @Transactional
+  @PointMetered(version = "v1")
   public Point usePoints(Long userId, Long amount, String description) {
     // 포인트 잔액 조회
     PointBalance pointBalance = pointBalanceRepository.findByUserId(userId)

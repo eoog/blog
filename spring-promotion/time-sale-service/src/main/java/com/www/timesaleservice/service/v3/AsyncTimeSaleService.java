@@ -1,5 +1,6 @@
 package com.www.timesaleservice.service.v3;
 
+import com.www.timesaleservice.aop.TimeSaleMetered;
 import com.www.timesaleservice.domain.TimeSale;
 import com.www.timesaleservice.dto.TimeSaleDto;
 import com.www.timesaleservice.service.v2.TimeSaleRedisService;
@@ -36,6 +37,7 @@ public class AsyncTimeSaleService {
   }
 
   // 타임세일 아이템 구매 // >> kafka 전송
+  @TimeSaleMetered(version = "v3")
   public String purchaseTimeSale(Long timeSaleId , TimeSaleDto.PurchaseRequest request) {
     // 구매 요청을 kafka 로 전송하고 요청 ID 반환
     return timeSaleProducer.sendPurchaseReqeust(timeSaleId,request.getUserId(),request.getQuantity());

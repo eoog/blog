@@ -1,5 +1,6 @@
 package com.www.timesaleservice.service.v1;
 
+import com.www.timesaleservice.aop.TimeSaleMetered;
 import com.www.timesaleservice.domain.Product;
 import com.www.timesaleservice.domain.TimeSale;
 import com.www.timesaleservice.domain.TimeSaleOrder;
@@ -62,6 +63,8 @@ public class TimeSaleService {
   }
 
   // 타임세일 구매
+  @Transactional
+  @TimeSaleMetered(version = "v1")
   public TimeSale purchaseTimeSale(Long timeSaleId , TimeSaleDto.PurchaseRequest request) {
     TimeSale timeSale = timeSaleRepository.findById(timeSaleId)
         .orElseThrow(() -> new IllegalArgumentException("타임세일을 찾을수 없습니다"));

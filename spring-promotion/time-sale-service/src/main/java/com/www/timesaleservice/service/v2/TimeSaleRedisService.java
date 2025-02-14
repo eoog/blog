@@ -2,6 +2,7 @@ package com.www.timesaleservice.service.v2;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.www.timesaleservice.aop.TimeSaleMetered;
 import com.www.timesaleservice.domain.Product;
 import com.www.timesaleservice.domain.TimeSale;
 import com.www.timesaleservice.domain.TimeSaleOrder;
@@ -79,6 +80,7 @@ public class TimeSaleRedisService {
 
     // 타임세일 제품 구매
     @Transactional
+    @TimeSaleMetered(version = "v2")
     public TimeSale purchaseTimeSale(Long timeSaleId , TimeSaleDto.PurchaseRequest request) {
         RLock lock = redissonClient.getLock(TIME_SALE_LOCK + timeSaleId);
         if (lock == null) {
