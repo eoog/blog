@@ -13,7 +13,9 @@ public class StompConfiguration implements WebSocketMessageBrokerConfigurer {
     // 웹소켓 클라이언트가 서버로 어디주소로 오는지 지정
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/stomp/chats");
+        registry.addEndpoint("/stomp/chats")
+            .setAllowedOrigins("http://localhost:3000")
+            .withSockJS(); // SockJS 지원 추가
     }
 
     // 메시지 브로커 역할 클라이언트 > 메시지 , 브로커는 구독
